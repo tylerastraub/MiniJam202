@@ -1,0 +1,55 @@
+[gd_scene load_steps=10 format=3 uid="uid://ifgcjowjik7e"]
+
+[ext_resource type="Script" uid="uid://dghhii7gqkwlu" path="res://src/main.gd" id="1_3cfgd"]
+[ext_resource type="PackedScene" uid="uid://bjte3uss16tqe" path="res://src/player.tscn" id="1_gh0ne"]
+[ext_resource type="PackedScene" uid="uid://br16sg8547t7i" path="res://src/enemy.tscn" id="2_5q4o7"]
+[ext_resource type="Script" uid="uid://q6gs7ulvu8gr" path="res://src/Duel/director.gd" id="3_5q4o7"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_gh0ne"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_5q4o7"]
+sky_material = SubResource("ProceduralSkyMaterial_gh0ne")
+
+[sub_resource type="Environment" id="Environment_3cfgd"]
+background_mode = 2
+sky = SubResource("Sky_5q4o7")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ts572"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ts572"]
+material = SubResource("StandardMaterial3D_ts572")
+size = Vector2(14, 4)
+
+[node name="main" type="Node3D"]
+script = ExtResource("1_3cfgd")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_3cfgd")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 5.5)
+fov = 54.0
+
+[node name="Level" type="Node3D" parent="."]
+
+[node name="floor" type="MeshInstance3D" parent="Level"]
+mesh = SubResource("PlaneMesh_ts572")
+
+[node name="Player" parent="." instance=ExtResource("1_gh0ne")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0, 0)
+
+[node name="Enemy" parent="." instance=ExtResource("2_5q4o7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, 0)
+
+[node name="Director" type="Node3D" parent="." node_paths=PackedStringArray("_player", "_enemy")]
+script = ExtResource("3_5q4o7")
+_player = NodePath("../Player")
+_enemy = NodePath("../Enemy")
