@@ -1,18 +1,109 @@
-[gd_scene load_steps=4 format=3 uid="uid://br16sg8547t7i"]
+[gd_scene load_steps=14 format=3 uid="uid://br16sg8547t7i"]
 
 [ext_resource type="Script" uid="uid://bawuhhuql053e" path="res://src/enemy.gd" id="1_gum6w"]
+[ext_resource type="PackedScene" uid="uid://dml8aua0as0nb" path="res://res/models/samurai.glb" id="2_c1w3u"]
+[ext_resource type="PackedScene" uid="uid://dcwlwois5p8ku" path="res://res/models/sword.glb" id="3_liqmj"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tbtuy"]
-albedo_color = Color(1, 0, 0, 1)
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_bktlc"]
+animation = &"Draw"
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_tbtuy"]
-material = SubResource("StandardMaterial3D_tbtuy")
-radius = 0.4
-height = 1.8
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_pg28d"]
+animation = &"Fall"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_21lrq"]
+animation = &"Hurt"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ehvfd"]
+animation = &"Ready"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bktlc"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ehvfd"]
+xfade_time = 0.03
+advance_mode = 2
+advance_condition = &"draw"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_rq7o7"]
+xfade_time = 0.02
+advance_mode = 2
+advance_condition = &"hurt"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_nrj4s"]
+xfade_time = 0.02
+advance_mode = 2
+advance_condition = &"hurt"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_rclot"]
+xfade_time = 0.1
+advance_mode = 2
+advance_condition = &"fall"
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_a17ok"]
+states/Draw/node = SubResource("AnimationNodeAnimation_bktlc")
+states/Draw/position = Vector2(548, 106)
+states/Fall/node = SubResource("AnimationNodeAnimation_pg28d")
+states/Fall/position = Vector2(621, 221)
+states/Hurt/node = SubResource("AnimationNodeAnimation_21lrq")
+states/Hurt/position = Vector2(454, 221)
+states/Ready/node = SubResource("AnimationNodeAnimation_ehvfd")
+states/Ready/position = Vector2(352, 101)
+states/Start/position = Vector2(201, 101)
+transitions = ["Start", "Ready", SubResource("AnimationNodeStateMachineTransition_bktlc"), "Ready", "Draw", SubResource("AnimationNodeStateMachineTransition_ehvfd"), "Ready", "Hurt", SubResource("AnimationNodeStateMachineTransition_rq7o7"), "Draw", "Hurt", SubResource("AnimationNodeStateMachineTransition_nrj4s"), "Hurt", "Fall", SubResource("AnimationNodeStateMachineTransition_rclot")]
+graph_offset = Vector2(-38, 67)
 
 [node name="Enemy" type="Node3D"]
 script = ExtResource("1_gum6w")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
-mesh = SubResource("CapsuleMesh_tbtuy")
+[node name="SamuraiMesh" parent="." instance=ExtResource("2_c1w3u")]
+
+[node name="Skeleton3D" parent="SamuraiMesh/Armature" index="0"]
+bones/0/position = Vector3(3.6119612e-08, 3.221312, -0.4131602)
+bones/0/rotation = Quaternion(0.056220632, 0, 4.914964e-09, 0.9984184)
+bones/1/rotation = Quaternion(0.10590689, -1.7733331e-15, 9.078687e-09, 0.9943761)
+bones/2/rotation = Quaternion(0.05435827, 0.27890387, -0.8892555, 0.35844463)
+bones/3/rotation = Quaternion(0.6131067, 0.06281491, -0.36227435, 0.69922227)
+bones/4/rotation = Quaternion(-0.03721431, 0.0009237666, 0.03130244, 0.9988166)
+bones/5/rotation = Quaternion(0.020640237, -0.06490693, -0.12932862, 0.98926)
+bones/6/rotation = Quaternion(0.055669148, -0.21659432, -0.42743388, 0.87594986)
+bones/7/rotation = Quaternion(0.085065074, -0.11128118, -0.22680686, 0.9638149)
+bones/8/rotation = Quaternion(-0.21933939, 0.00042190036, -0.21665993, 0.9512879)
+bones/10/rotation = Quaternion(0, 1.110223e-16, 4.1633363e-16, 1)
+bones/11/rotation = Quaternion(-0.060933936, 0.18604611, 0.9791295, -0.054584157)
+bones/12/rotation = Quaternion(0.36512712, -0.6895875, 0.40629017, 0.47547832)
+bones/13/rotation = Quaternion(0.008558059, -0.53005147, -0.0015406855, 0.8479209)
+bones/14/rotation = Quaternion(-0.0074950648, 0.003071922, 0.09179179, 0.9957453)
+bones/15/rotation = Quaternion(-0.05713662, 0.017254166, 0.46205395, 0.88484114)
+bones/16/position = Vector3(-0.18753411, -0.060508564, 0.14451274)
+bones/16/rotation = Quaternion(-0.0025618752, -0.27023405, 0.23802175, 0.9329055)
+bones/17/rotation = Quaternion(-0.12956071, -0.011200975, -0.028798899, 0.99108994)
+bones/18/rotation = Quaternion(0.20505312, 0.3724867, 0.90115196, -0.08445236)
+bones/19/rotation = Quaternion(-0.49971196, 0.0003381693, -0.06242446, 0.86393934)
+bones/20/rotation = Quaternion(-0.02004871, 0.627926, 0.7730064, -0.08813822)
+bones/21/rotation = Quaternion(-0.22601606, 0.16481923, 0.94091296, 0.19087777)
+bones/22/rotation = Quaternion(-0.43351915, -0.00035210117, 0.05415561, 0.8995155)
+bones/23/rotation = Quaternion(0.08429696, 0.5374528, 0.7955231, -0.26679862)
+bones/24/position = Vector3(1.0508904, 2.0648413, 0.9037075)
+bones/25/position = Vector3(0.6417752, 0.22453666, 0.03741944)
+bones/25/rotation = Quaternion(-0.6994004, 0.10411044, 0.10411044, 0.69940054)
+bones/26/position = Vector3(-1.6231029, 2.0648413, 0.9037073)
+bones/27/position = Vector3(-1.0883868, 0.22453666, -1.2290311)
+bones/27/rotation = Quaternion(-0.6042894, -0.36719793, -0.36719793, 0.6042894)
+
+[node name="BoneAttachment3D" type="BoneAttachment3D" parent="SamuraiMesh/Armature/Skeleton3D" index="1"]
+transform = Transform3D(0.49234447, 0.8702125, 0.018079987, 0.84202546, -0.4814518, 0.24330409, 0.22043101, -0.104565606, -0.9697815, 0.79523504, 4.0602427, 0.23239793)
+bone_name = "MidHand.R"
+bone_idx = 14
+
+[node name="sword2" parent="SamuraiMesh/Armature/Skeleton3D/BoneAttachment3D" instance=ExtResource("3_liqmj")]
+transform = Transform3D(4.9870377, 0.24679826, -0.26175353, 0.15110657, -4.738449, -1.5887756, -0.32648212, 1.5767481, -4.7336287, 0.09386158, 1.0089993, 2.5776772)
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+root_node = NodePath("../SamuraiMesh")
+tree_root = SubResource("AnimationNodeStateMachine_a17ok")
+anim_player = NodePath("../SamuraiMesh/AnimationPlayer")
+parameters/conditions/draw = false
+parameters/conditions/fall = false
+parameters/conditions/hurt = false
+
+[editable path="SamuraiMesh"]

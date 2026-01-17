@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bjte3uss16tqe"]
+[gd_scene load_steps=14 format=3 uid="uid://bjte3uss16tqe"]
 
 [ext_resource type="Script" uid="uid://dm2u0tvlq7epx" path="res://src/player.gd" id="1_lowyb"]
 [ext_resource type="PackedScene" uid="uid://dml8aua0as0nb" path="res://res/models/samurai.glb" id="2_gmfve"]
@@ -6,6 +6,12 @@
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_bktlc"]
 animation = &"Draw"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_pg28d"]
+animation = &"Fall"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_21lrq"]
+animation = &"Hurt"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ehvfd"]
 animation = &"Ready"
@@ -18,13 +24,30 @@ xfade_time = 0.03
 advance_mode = 2
 advance_condition = &"draw"
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_rq7o7"]
+advance_mode = 2
+advance_condition = &"hurt"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_nrj4s"]
+advance_mode = 2
+advance_condition = &"hurt"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_rclot"]
+advance_mode = 2
+advance_condition = &"fall"
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_pg28d"]
 states/Draw/node = SubResource("AnimationNodeAnimation_bktlc")
 states/Draw/position = Vector2(548, 106)
+states/Fall/node = SubResource("AnimationNodeAnimation_pg28d")
+states/Fall/position = Vector2(621, 221)
+states/Hurt/node = SubResource("AnimationNodeAnimation_21lrq")
+states/Hurt/position = Vector2(454, 221)
 states/Ready/node = SubResource("AnimationNodeAnimation_ehvfd")
 states/Ready/position = Vector2(352, 101)
 states/Start/position = Vector2(201, 101)
-transitions = ["Start", "Ready", SubResource("AnimationNodeStateMachineTransition_bktlc"), "Ready", "Draw", SubResource("AnimationNodeStateMachineTransition_ehvfd")]
+transitions = ["Start", "Ready", SubResource("AnimationNodeStateMachineTransition_bktlc"), "Ready", "Draw", SubResource("AnimationNodeStateMachineTransition_ehvfd"), "Ready", "Hurt", SubResource("AnimationNodeStateMachineTransition_rq7o7"), "Draw", "Hurt", SubResource("AnimationNodeStateMachineTransition_nrj4s"), "Hurt", "Fall", SubResource("AnimationNodeStateMachineTransition_rclot")]
+graph_offset = Vector2(-38, 67)
 
 [node name="Player" type="Node3D"]
 script = ExtResource("1_lowyb")
@@ -32,38 +55,40 @@ script = ExtResource("1_lowyb")
 [node name="SamuraiMesh" parent="." instance=ExtResource("2_gmfve")]
 
 [node name="Skeleton3D" parent="SamuraiMesh/Armature" index="0"]
-bones/0/position = Vector3(-3.661288e-08, 3.0170195, 0.41880256)
-bones/0/rotation = Quaternion(0.039218154, -1.7707802e-15, 3.4285603e-09, 0.9992307)
-bones/1/rotation = Quaternion(0.03885213, -1.3193859e-16, 3.396561e-09, 0.999245)
-bones/2/rotation = Quaternion(0.050710283, 0.28045893, -0.89003885, 0.3558118)
-bones/3/rotation = Quaternion(0.6131067, 0.062814966, -0.3622745, 0.69922227)
-bones/5/rotation = Quaternion(0.02064023, -0.064906925, -0.12932862, 0.98926)
-bones/6/rotation = Quaternion(0.05566919, -0.21659428, -0.42743388, 0.87594986)
-bones/7/rotation = Quaternion(0.085065074, -0.11128119, -0.22680682, 0.963815)
-bones/8/rotation = Quaternion(-0.2193394, 0.000421878, -0.21665998, 0.95128787)
-bones/11/rotation = Quaternion(-0.17521457, 0.6105574, 0.76941305, 0.06725451)
-bones/12/rotation = Quaternion(0.30679712, -0.11573969, -0.00542063, 0.94469595)
-bones/13/rotation = Quaternion(-0.162232, -0.6005533, -0.17408597, 0.76335484)
-bones/14/rotation = Quaternion(0.021935945, -0.05698563, 0.32622975, 0.94331634)
-bones/15/rotation = Quaternion(0.042509433, 0.013038874, 0.7168702, 0.6957874)
-bones/16/position = Vector3(-0.18753491, -0.060508806, 0.1445134)
-bones/16/rotation = Quaternion(0.5295526, -0.20664744, 0.35193628, 0.74364763)
-bones/17/rotation = Quaternion(-0.6119563, -0.18900263, 0.26270148, 0.72164774)
-bones/18/rotation = Quaternion(0.24961148, 0.22771618, 0.92699665, -0.16284004)
-bones/19/rotation = Quaternion(-0.5709929, 0.00032012907, -0.07132894, 0.81785035)
-bones/20/rotation = Quaternion(-0.15609874, 0.4361499, 0.8348652, 0.2973326)
-bones/21/rotation = Quaternion(-0.17759521, 0.43291506, 0.8800802, 0.08064299)
-bones/22/rotation = Quaternion(-0.22286695, -0.00038142153, 0.027840732, 0.97445124)
-bones/23/rotation = Quaternion(-0.11218829, 0.8635327, 0.4789511, 0.11104405)
-bones/24/position = Vector3(1.1600852, 2.0648413, 1.1977978)
-bones/25/position = Vector3(0.6417752, 0.22453666, -0.19880588)
-bones/25/rotation = Quaternion(-0.5683213, 0.4207266, 0.4207266, 0.5683213)
-bones/26/position = Vector3(-1.2742865, 2.0648413, 2.444018)
-bones/27/position = Vector3(-1.2216716, 0.22453666, 2.3243043)
-bones/27/rotation = Quaternion(-0.7069288, -0.015866475, -0.015866475, 0.7069287)
+bones/0/position = Vector3(-2.8600152e-07, 0.45561934, 3.2714763)
+bones/0/rotation = Quaternion(0.707598, 5.020808e-15, 6.186017e-08, 0.70661527)
+bones/1/rotation = Quaternion(0.026646212, 1.6936916e-15, 2.3294875e-09, 0.99964494)
+bones/2/rotation = Quaternion(-0.01464938, -0.05757986, -0.99208385, 0.11063281)
+bones/3/rotation = Quaternion(0.049705397, 0.2209384, -0.07449812, 0.97116715)
+bones/4/rotation = Quaternion(0.00580574, 0.32807943, 0.019894645, 0.9444228)
+bones/5/rotation = Quaternion(-0.046802286, 0.008352408, -0.102319464, 0.993615)
+bones/6/rotation = Quaternion(-0.12379378, 0.01944663, -0.2501667, 0.96005917)
+bones/7/rotation = Quaternion(0.055648267, 0.005843502, -0.02085155, 0.9982157)
+bones/8/rotation = Quaternion(-0.12956072, 0.011200964, 0.02879892, 0.9910899)
+bones/10/rotation = Quaternion(8.098377e-10, -0.71875715, 0.0009989139, 0.6952605)
+bones/11/rotation = Quaternion(-0.013672699, 0.04683759, 0.9924416, 0.11260173)
+bones/12/rotation = Quaternion(0.081192255, -0.34407678, 0.06714186, 0.9330118)
+bones/13/rotation = Quaternion(0.023333231, -0.39079452, -0.017259201, 0.9200204)
+bones/14/rotation = Quaternion(-0.0013719657, -0.0012690311, 0.08504181, 0.9963757)
+bones/15/rotation = Quaternion(-0.016907118, -0.0030388625, 0.27500314, 0.9612899)
+bones/16/position = Vector3(-0.00035945865, -0.0473326, 0.14675038)
+bones/16/rotation = Quaternion(0.05178405, -0.0057626935, 0.020874007, 0.9984235)
+bones/17/rotation = Quaternion(-0.12956072, -0.011200962, -0.028798906, 0.99108994)
+bones/18/rotation = Quaternion(0.008037813, -0.004066625, 0.9999066, -0.010287876)
+bones/19/rotation = Quaternion(-0.08166362, 0.00039010908, -0.010201492, 0.99660766)
+bones/20/rotation = Quaternion(0.0037948682, 0.81486046, 0.5795944, -0.007632242)
+bones/21/rotation = Quaternion(-0.008037699, -0.0040657925, 0.9999066, 0.010287992)
+bones/22/rotation = Quaternion(-0.08166522, -0.0003901093, 0.010201694, 0.99660754)
+bones/23/rotation = Quaternion(-0.003794767, 0.8148601, 0.5795951, 0.007632166)
+bones/24/position = Vector3(0.52015626, -0.48342204, 1.7774472)
+bones/25/position = Vector3(0.5201563, 0.7913899, -0.2262059)
+bones/25/rotation = Quaternion(0.17016876, -5.0512163e-08, 5.0512178e-08, 0.985415)
+bones/26/position = Vector3(-0.5201564, -0.48342204, 1.7774472)
+bones/27/position = Vector3(-0.5201563, 0.79138976, -0.22620602)
+bones/27/rotation = Quaternion(0.17016876, -5.0512163e-08, 5.0512178e-08, 0.985415)
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="SamuraiMesh/Armature/Skeleton3D" index="1"]
-transform = Transform3D(-0.30287322, -0.5892399, 0.74904174, 0.9160514, -0.39680684, 0.05825177, 0.2629009, 0.7038039, 0.6599565, -1.8289794, 5.6223216, 3.3161278)
+transform = Transform3D(-0.06136039, -0.011028883, 0.99805456, -0.9977048, -0.02800985, -0.06164828, 0.028635278, -0.99954665, -0.009284867, -1.1701566, 0.06364326, 3.1919131)
 bone_name = "MidHand.R"
 bone_idx = 14
 
@@ -75,5 +100,7 @@ root_node = NodePath("../SamuraiMesh")
 tree_root = SubResource("AnimationNodeStateMachine_pg28d")
 anim_player = NodePath("../SamuraiMesh/AnimationPlayer")
 parameters/conditions/draw = false
+parameters/conditions/fall = false
+parameters/conditions/hurt = false
 
 [editable path="SamuraiMesh"]

@@ -32,7 +32,7 @@ func _physics_process(delta: float) -> void:
         pass
 
 func duel(delta: float) -> void:
-    if _player._stats.health < 1:
+    if _player.get_stats().health < 1:
         _round_state = RoundState.LOST
         return
     
@@ -51,7 +51,7 @@ func duel(delta: float) -> void:
 
     var enemies_alive : bool = false
     for enemy in _enemy_list:
-        if enemy._stats.health < 1:
+        if enemy.get_stats().health < 1:
             continue
         enemies_alive = true
         if enemy.action(_duel_timer):
