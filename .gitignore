@@ -6,3 +6,4 @@
 *.import
 brainstorm.txt
 .editorconfig
+*.tmp
