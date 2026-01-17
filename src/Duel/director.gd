@@ -9,6 +9,8 @@ enum RoundState {
     LOST,
 }
 
+@export var _camera_pivot : CameraPivot = null
+
 @export var _player : Player = null
 @export var _enemy : Enemy = null
 var _enemy_list : Array[Enemy] = []
@@ -19,11 +21,15 @@ var _round_state : RoundState = RoundState.NOVAL
 
 func _ready() -> void:
     _enemy_list.push_back(_enemy)
-    _round_state = RoundState.DUEL
+    _round_state = RoundState.CAMERA_SPAWN
+    _camera_pivot.spawn()
+    _camera_pivot.cameraSpawned.connect(_on_camera_spawned)
 
 func _physics_process(delta: float) -> void:
     if _round_state == RoundState.DUEL:
         duel(delta)
+    if _round_state == RoundState.WON:
+        pass
 
 func duel(delta: float) -> void:
     if _player._stats.health < 1:
@@ -62,3 +68,8 @@ func duel(delta: float) -> void:
         _round_state = RoundState.WON
 
     _duel_timer += delta
+
+func _on_camera_spawned() -> void:
+    if _round_state == RoundState.CAMERA_SPAWN:
+        _round_state = RoundState.DUEL
+        print("time to duel")

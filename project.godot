@@ -26,3 +26,8 @@ pause={
 [physics]
 
 common/physics_ticks_per_second=50
+
+[rendering]
+
+anti_aliasing/quality/msaa_3d=2
+anti_aliasing/quality/screen_space_aa=1

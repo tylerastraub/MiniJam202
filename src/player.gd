@@ -2,15 +2,31 @@ extends Node3D
 
 class_name Player
 
+enum DuelerState {
+    NOVAL = -1,
+    READY,
+    DRAW,
+    SHEATH,
+}
+
 var _stats : DuelStats
+
+var _state : DuelerState = DuelerState.NOVAL
+
+@onready var _animation : AnimationTree = $AnimationTree
 
 func _init() -> void:
     _stats = DuelStats.new()
+    _state = DuelerState.READY
+
+func _physics_process(delta: float) -> void:
+    animate(delta)
 
 # returns true if action ready to be taken for this turn
 func action(timer: float) -> bool:
     if timer > _stats.draw_time and _stats.attacked == false:
         _stats.attacked = true
+        _state = DuelerState.DRAW
         return true
     return false
 
@@ -37,3 +53,6 @@ func strike(critical: bool) -> void:
         _stats.health = 0
     else:
         _stats.health -= 1
+
+func animate(_delta: float) -> void:
+    _animation.set("parameters/conditions/draw", _state == DuelerState.DRAW)
