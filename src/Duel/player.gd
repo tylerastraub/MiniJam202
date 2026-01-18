@@ -4,26 +4,26 @@ class_name Player
 
 var _shake : ShakeEffect
 
-var _stats : DuelStats
 var _ai : DuelAI
 
 @onready var _animation : AnimationTree = $AnimationTree
 
 var _hurt_counter : float = 0.0
-var _hurt_time : float = 0.5
+var _hurt_time : float = 0.75
 
 var _gold : int = 0
 
 func _init() -> void:
     _shake = ShakeEffect.new()
+    _shake.shake_decrement = 1.0 / _hurt_time
     _ai = DuelAI.new()
 
-func _ready() -> void:
-    _ai.ai_init(_stats)
+func ai_init(stats: DuelStats) -> void:
+    _ai.ai_init(stats)
 
 func _physics_process(delta: float) -> void:
     var coefficient : float = 1.0 if randi() % 2 else -1.0
-    position.x = -2.5 + _shake.max_shake * _shake.shake_amount * coefficient
+    position.x = -2 + _shake.max_shake * _shake.shake_amount * coefficient
     _shake.update_shake(delta)
     
     if get_state() == DuelAI.State.HURT:

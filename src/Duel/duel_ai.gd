@@ -31,8 +31,11 @@ func action(timer: float) -> bool:
 func attack() -> Attack:
     var res : Attack = Attack.new()
 
-    while(randf() < _stats.multi_hit_chance):
-        res.num_of_hits += 1
+    if _stats.multi_hit_chance >= 1.0:
+        res.num_of_hits = 100
+    else:
+        while(randf() < _stats.multi_hit_chance):
+            res.num_of_hits += 1
     
     for i in range(res.num_of_hits):
         res.criticals.push_back(randf() < _stats.critical_chance)

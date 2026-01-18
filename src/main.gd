@@ -34,9 +34,11 @@ func _input(_event: InputEvent) -> void:
             remove_child(_upgrade_store)
             _upgrade_store = null
         _game = _game_scene.instantiate()
+        _player_stats.attacked = false
         _game.set_player_stats(_player_stats)
         _game.set_player_gold(_player_gold)
         add_child(_game)
+        _game.start_round()
 
 func _ready() -> void:
     _player_stats = DuelStats.new()
@@ -102,9 +104,11 @@ func _on_upgrade_bought(type: UpgradeItem.Type, new_value: float, cost: int) -> 
 
 func _on_next_duel() -> void:
     _game = _game_scene.instantiate()
+    _player_stats.attacked = false
     _game.set_player_stats(_player_stats)
     _game.set_player_gold(_player_gold)
     add_child(_game)
+    _game.start_round()
     
     remove_child(_upgrade_store)
     _upgrade_store = null

@@ -65,15 +65,16 @@ transitions = ["Start", "Ready", SubResource("AnimationNodeStateMachineTransitio
 graph_offset = Vector2(-38, 67)
 
 [node name="Player" type="Node3D"]
+top_level = true
 script = ExtResource("1_lowyb")
 
 [node name="SamuraiMesh" parent="." instance=ExtResource("2_gmfve")]
 
 [node name="Skeleton3D" parent="SamuraiMesh/Armature" index="0"]
-bones/0/position = Vector3(3.6119612e-08, 3.1844473, -0.4131602)
+bones/0/position = Vector3(3.6119612e-08, 3.1617036, -0.4131602)
 bones/0/rotation = Quaternion(0.056220632, 0, 4.914964e-09, 0.9984184)
-bones/1/rotation = Quaternion(0.10968887, -1.8544814e-15, 9.078759e-09, 0.993966)
-bones/2/rotation = Quaternion(0.06105808, 0.27602923, -0.8877622, 0.36326066)
+bones/1/rotation = Quaternion(0.112017885, -1.914015e-15, 9.078732e-09, 0.9937062)
+bones/2/rotation = Quaternion(0.065183125, 0.27424765, -0.88680744, 0.36621335)
 bones/3/rotation = Quaternion(0.6131067, 0.06281491, -0.36227435, 0.69922227)
 bones/4/rotation = Quaternion(-0.03721431, 0.0009237666, 0.03130244, 0.9988166)
 bones/5/rotation = Quaternion(0.020640237, -0.06490693, -0.12932862, 0.98926)
@@ -81,7 +82,7 @@ bones/6/rotation = Quaternion(0.055669148, -0.21659432, -0.42743388, 0.87594986)
 bones/7/rotation = Quaternion(0.085065074, -0.11128118, -0.22680686, 0.9638149)
 bones/8/rotation = Quaternion(-0.21933939, 0.00042190036, -0.21665993, 0.9512879)
 bones/10/rotation = Quaternion(0, 1.110223e-16, 4.1633363e-16, 1)
-bones/11/rotation = Quaternion(-0.05159096, 0.18572958, 0.9797951, -0.053334065)
+bones/11/rotation = Quaternion(-0.045813493, 0.18552555, 0.98016274, -0.052558847)
 bones/12/rotation = Quaternion(0.36512712, -0.6895875, 0.40629017, 0.47547832)
 bones/13/rotation = Quaternion(0.008558059, -0.53005147, -0.0015406855, 0.8479209)
 bones/14/rotation = Quaternion(-0.0074950648, 0.003071922, 0.09179179, 0.9957453)
@@ -89,12 +90,12 @@ bones/15/rotation = Quaternion(-0.05713662, 0.017254166, 0.46205395, 0.88484114)
 bones/16/position = Vector3(-0.18753411, -0.060508564, 0.14451274)
 bones/16/rotation = Quaternion(-0.0025618752, -0.27023405, 0.23802175, 0.9329055)
 bones/17/rotation = Quaternion(-0.12956071, -0.011200975, -0.028798899, 0.99108994)
-bones/18/rotation = Quaternion(0.20456138, 0.3819754, 0.8969727, -0.08768988)
-bones/19/rotation = Quaternion(-0.51643264, 0.0003342405, -0.06451321, 0.8538942)
-bones/20/rotation = Quaternion(-0.02168821, 0.62122756, 0.7782841, -0.08876943)
-bones/21/rotation = Quaternion(-0.22555704, 0.17367794, 0.9382805, 0.19644254)
-bones/22/rotation = Quaternion(-0.4526609, -0.00034833033, 0.056546804, 0.889888)
-bones/23/rotation = Quaternion(0.07975313, 0.5292187, 0.8018102, -0.26583347)
+bones/18/rotation = Quaternion(0.20425314, 0.38768095, 0.89439934, -0.08963278)
+bones/19/rotation = Quaternion(-0.5263495, 0.0003318363, -0.06575206, 0.8477222)
+bones/20/rotation = Quaternion(-0.022672016, 0.61720866, 0.7814049, -0.0891403)
+bones/21/rotation = Quaternion(-0.22529982, 0.17889866, 0.9366466, 0.1998212)
+bones/22/rotation = Quaternion(-0.4639476, -0.00034603075, 0.05795676, 0.88396466)
+bones/23/rotation = Quaternion(0.07696968, 0.5243026, 0.8055167, -0.2651893)
 bones/24/position = Vector3(1.0508904, 2.0648413, 0.9037075)
 bones/25/position = Vector3(0.6417752, 0.22453666, 0.03741944)
 bones/25/rotation = Quaternion(-0.6994004, 0.10411044, 0.10411044, 0.69940054)
@@ -106,7 +107,7 @@ bones/27/rotation = Quaternion(-0.6042894, -0.36719793, -0.36719793, 0.6042894)
 surface_material_override/0 = ExtResource("3_21lrq")
 
 [node name="HandAttachment" type="BoneAttachment3D" parent="SamuraiMesh/Armature/Skeleton3D" index="1"]
-transform = Transform3D(0.49635842, 0.86811745, -0.0002797097, 0.8404339, -0.48044905, 0.2506773, 0.21748297, -0.12466084, -0.9680706, 0.7944404, 4.0196815, 0.20091717)
+transform = Transform3D(0.49875116, 0.86666715, -0.011628633, 0.839501, -0.47969317, 0.25521067, 0.21560459, -0.13704883, -0.9668154, 0.79366297, 3.9948936, 0.18145788)
 bone_name = "MidHand.R"
 bone_idx = 14
 
@@ -117,7 +118,7 @@ transform = Transform3D(4.9870377, 0.24679826, -0.26175353, 0.15110657, -4.73844
 transform = Transform3D(4.9870377, 0.2467978, -0.26175216, 0.15110648, -4.73845, -1.5887768, -0.32648164, 1.5767485, -4.7336273, 0.09386158, 1.0089993, 2.5776772)
 
 [node name="HipAttachment" type="BoneAttachment3D" parent="SamuraiMesh/Armature/Skeleton3D" index="2"]
-transform = Transform3D(1, -9.814381e-09, 5.5264476e-10, 9.814381e-09, 0.9936785, -0.112263426, 5.5264476e-10, 0.112263426, 0.9936785, 3.6119612e-08, 3.1844473, -0.4131602)
+transform = Transform3D(1, -9.814381e-09, 5.5264476e-10, 9.814381e-09, 0.9936785, -0.112263426, 5.5264476e-10, 0.112263426, 0.9936785, 3.6119612e-08, 3.1617036, -0.4131602)
 bone_name = "Hip"
 bone_idx = 0
 
