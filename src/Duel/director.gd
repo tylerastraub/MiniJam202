@@ -13,6 +13,7 @@ enum RoundState {
 
 @export var _player : Player = null
 @export var _enemy : Enemy = null
+@export var _ready_splash : ReadySplash = null
 var _enemy_list : Array[Enemy] = []
 
 var _duel_timer : float = 0.0
@@ -24,6 +25,7 @@ func _ready() -> void:
     _round_state = RoundState.CAMERA_SPAWN
     _camera_pivot.spawn()
     _camera_pivot.cameraSpawned.connect(_on_camera_spawned)
+    _ready_splash.call_deferred("start_ready_splash")
 
 func _physics_process(delta: float) -> void:
     if _round_state == RoundState.DUEL:

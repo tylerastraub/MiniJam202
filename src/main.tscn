@@ -1,10 +1,13 @@
-[gd_scene load_steps=11 format=3 uid="uid://ifgcjowjik7e"]
+[gd_scene load_steps=14 format=3 uid="uid://ifgcjowjik7e"]
 
 [ext_resource type="Script" uid="uid://dghhii7gqkwlu" path="res://src/main.gd" id="1_3cfgd"]
 [ext_resource type="PackedScene" uid="uid://bjte3uss16tqe" path="res://src/player.tscn" id="1_gh0ne"]
 [ext_resource type="PackedScene" uid="uid://br16sg8547t7i" path="res://src/enemy.tscn" id="2_5q4o7"]
 [ext_resource type="Script" uid="uid://q6gs7ulvu8gr" path="res://src/Duel/director.gd" id="3_5q4o7"]
 [ext_resource type="Script" uid="uid://cqu6rpwkgcv8h" path="res://src/camera_pivot.gd" id="5_fyndt"]
+[ext_resource type="Script" uid="uid://blos8e0uuxvlj" path="res://src/ready_splash.gd" id="6_5mrjc"]
+[ext_resource type="Texture2D" uid="uid://deent048t5wau" path="res://res/sprites/ready.png" id="6_kmhfv"]
+[ext_resource type="Texture2D" uid="uid://d235es3e48ih3" path="res://res/sprites/ready_loadbar.png" id="7_rlaii"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_gh0ne"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -43,11 +46,12 @@ mesh = SubResource("PlaneMesh_ts572")
 [node name="Player" parent="." instance=ExtResource("1_gh0ne")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -2.5, 0, 0)
 
-[node name="Director" type="Node3D" parent="." node_paths=PackedStringArray("_camera_pivot", "_player", "_enemy")]
+[node name="Director" type="Node3D" parent="." node_paths=PackedStringArray("_camera_pivot", "_player", "_enemy", "_ready_splash")]
 script = ExtResource("3_5q4o7")
 _camera_pivot = NodePath("../CameraPivot")
 _player = NodePath("../Player")
 _enemy = NodePath("../Enemy")
+_ready_splash = NodePath("../CanvasLayer/ReadySplash")
 
 [node name="CameraPivot" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45822525, 0)
@@ -59,3 +63,47 @@ fov = 54.0
 
 [node name="Enemy" parent="." instance=ExtResource("2_5q4o7")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 2.5, 0, 0)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ReadySplash" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+script = ExtResource("6_5mrjc")
+
+[node name="ReadySprite" type="TextureRect" parent="CanvasLayer/ReadySplash"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 368.0
+offset_top = 238.0
+offset_right = 744.0
+offset_bottom = 370.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("6_kmhfv")
+
+[node name="Mask" type="Polygon2D" parent="CanvasLayer/ReadySplash"]
+clip_children = 1
+polygon = PackedVector2Array(397, 374, 671, 374, 671, 376, 670, 376, 670, 378, 669, 378, 669, 380, 668, 380, 668, 382, 667, 382, 667, 383, 393, 383, 393, 382, 394, 382, 394, 380, 395, 380, 395, 378, 396, 378, 396, 376, 397, 376)
+
+[node name="ReadyLoadBar" type="TextureRect" parent="CanvasLayer/ReadySplash/Mask"]
+texture_filter = 1
+offset_left = 393.0
+offset_top = 374.0
+offset_right = 671.0
+offset_bottom = 383.0
+mouse_filter = 2
+texture = ExtResource("7_rlaii")
+expand_mode = 1
+stretch_mode = 1
