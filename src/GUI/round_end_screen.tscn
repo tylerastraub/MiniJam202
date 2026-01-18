@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://cvkil57cca0bs"]
+[gd_scene load_steps=7 format=3 uid="uid://cvkil57cca0bs"]
 
 [ext_resource type="Script" uid="uid://d1v65rtsenrbc" path="res://src/GUI/round_end_screen.gd" id="1_7xaod"]
 [ext_resource type="Texture2D" uid="uid://bosd8cw44mqb4" path="res://res/sprites/win.png" id="1_l4tdj"]
 [ext_resource type="Texture2D" uid="uid://i27tjvrq5smy" path="res://res/sprites/lose.png" id="2_7vicr"]
 [ext_resource type="Theme" uid="uid://chdy4l3l6ghjk" path="res://res/themes/store_theme.tres" id="3_7vicr"]
+[ext_resource type="Texture2D" uid="uid://dwrvlqb2jx3e6" path="res://res/sprites/draw.png" id="4_qlcmx"]
 [ext_resource type="Texture2D" uid="uid://3ilpd4gb8gqv" path="res://res/sprites/gold.png" id="5_656bn"]
 
 [node name="RoundEndScreen" type="Control"]
@@ -30,7 +31,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("1_l4tdj")
 
-[node name="Lose Texture" type="TextureRect" parent="."]
+[node name="LoseTexture" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -44,6 +45,21 @@ offset_bottom = -163.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_7vicr")
+
+[node name="DrawTexture" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -152.5
+offset_top = -274.0
+offset_right = 152.5
+offset_bottom = -163.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_qlcmx")
 
 [node name="Button" type="Button" parent="."]
 layout_mode = 1

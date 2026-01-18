@@ -23,7 +23,7 @@ func get_player_stats() -> DuelStats:
 func get_player_gold() -> int:
     return $Player._gold
 
-func _on_duel_complete(_won: bool, gold_won: int) -> void:
+func _on_duel_complete(_round_result: RoundEndScreen.RoundResult, gold_won: int) -> void:
     var gold : int = get_player_gold()
     gold += gold_won
     set_player_gold(max(gold, 0))

@@ -9,9 +9,10 @@ enum RoundState {
     DUEL,
     WON,
     LOST,
+    DRAW,
 }
 
-signal duelComplete(won: bool, gold_won: int)
+signal duelComplete(round_result: RoundEndScreen.RoundResult, gold_won: int)
 
 @export var _camera_pivot : CameraPivot = null
 @export var _player : Player = null
@@ -28,6 +29,9 @@ var _multi_attack_delay : float = 0.2
 var _multi_attacking : bool = false
 var _multi_attack_timer : float = 0.0
 var _enemy_attacked : Array[bool] = []
+var _enemies_who_attacked : Array[bool] = []
+var _draw_timer : float = 0.0
+var _draw_delay : float = 0.5
 
 var _round_state : RoundState = RoundState.NOVAL
 
@@ -42,17 +46,20 @@ func start_round() -> void:
 func _physics_process(delta: float) -> void:
     if _round_state == RoundState.DUEL:
         duel(delta)
-    elif _round_state == RoundState.WON:
-        pass
-    elif _round_state == RoundState.LOST:
-        pass
+    elif _round_state == RoundState.DRAW:
+        _draw_timer += delta
+        if _draw_timer >= _draw_delay and _round_end_screen._display == false:
+            _round_end_screen.display(RoundEndScreen.RoundResult.DRAW)
+            _player.set_state(DuelAI.State.SHEATH)
+            for e in _enemy_list:
+                e.set_state(DuelAI.State.SHEATH)
 
 func duel(delta: float) -> void:
     if _player.get_state() == DuelAI.State.DEAD:
         set_round_state(RoundState.LOST)
         for enemy in _enemy_list:
             if enemy.get_stats().health > 0:
-                enemy._ai._state = DuelAI.State.SHEATH
+                enemy.set_state(DuelAI.State.SHEATH)
         return
     
     if _player.action(_duel_timer):
@@ -87,13 +94,15 @@ func duel(delta: float) -> void:
                 _enemy_list[i].strike(false)
 
     var enemies_alive : bool = false
-    for enemy in _enemy_list:
+    for i in range(_enemy_list.size()):
+        var enemy := _enemy_list[i]
         if enemy.get_stats().health < 1:
             if enemy.get_state() == DuelAI.State.HURT:
                 enemies_alive = true
             continue
         enemies_alive = true
         if enemy.action(_duel_timer):
+            _enemies_who_attacked[i] = true
             var e_attack : Attack = enemy.attack()
             if e_attack.criticals[0]:
                 _player.strike(true)
@@ -105,7 +114,15 @@ func duel(delta: float) -> void:
     if enemies_alive == false:
         print("round won")
         set_round_state(RoundState.WON)
-        _player._ai._state = DuelAI.State.SHEATH
+        _player.set_state(DuelAI.State.SHEATH)
+    
+    var enemies_attacking = false
+    for e in _enemies_who_attacked:
+        if e == false:
+            enemies_attacking = true
+            break
+    if enemies_attacking == false and _player.get_stats().health > 0 and enemies_alive:
+        set_round_state(RoundState.DRAW)
 
     _multi_attack_timer += delta
     if !_multi_attacking: _duel_timer += delta
@@ -122,6 +139,7 @@ func spawn_enemies() -> void:
             enemy.global_position.z = sin(PI * (i + 0.5))
         _enemy_list.push_back(enemy)
         _enemy_attacked.push_back(false)
+        _enemies_who_attacked.push_back(false)
 
 func set_round_state(state: RoundState) -> void:
     if state == _round_state:
@@ -131,9 +149,9 @@ func set_round_state(state: RoundState) -> void:
         var gold_won : int = 0
         for e in _enemy_list:
             gold_won += e.get_stats().bounty
-        _round_end_screen.display(true, gold_won)
+        _round_end_screen.display(RoundEndScreen.RoundResult.WON, gold_won)
     elif _round_state == RoundState.LOST:
-        _round_end_screen.display(false, _player.get_stats().bounty * -1)
+        _round_end_screen.display(RoundEndScreen.RoundResult.LOST, _player.get_stats().bounty * -1)
 
 func _on_camera_spawned() -> void:
     if _round_state == RoundState.CAMERA_SPAWN:
@@ -141,4 +159,4 @@ func _on_camera_spawned() -> void:
         print("begin duel")
 
 func _on_continue_pressed() -> void:
-    duelComplete.emit(_round_end_screen._won, _round_end_screen._gold_won)
+    duelComplete.emit(_round_end_screen._round_result, _round_end_screen._gold_won)

@@ -111,6 +111,7 @@ func _on_upgrade_bought(type: UpgradeItem.Type, new_value: float, cost: int) -> 
 func _on_next_duel() -> void:
     _game = _game_scene.instantiate()
     _player_stats.attacked = false
+    _player_stats.health = 1
     var level_sum : float = 0.0
     for key in _upgrade_levels:
         level_sum += (_upgrade_levels[key] - 1) * 10
