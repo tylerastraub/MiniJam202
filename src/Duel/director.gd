@@ -44,7 +44,6 @@ func duel(delta: float) -> void:
         return
     
     if _player.action(_duel_timer):
-        print("player attack")
         var p_attack : Attack = _player.attack()
         for i in range(p_attack.num_of_hits):
             if i >= _enemy_list.size():
@@ -64,7 +63,6 @@ func duel(delta: float) -> void:
             continue
         enemies_alive = true
         if enemy.action(_duel_timer):
-            print("enemy attack")
             var e_attack : Attack = enemy.attack()
             if e_attack.criticals[0]:
                 _player.strike(true)
@@ -83,4 +81,3 @@ func duel(delta: float) -> void:
 func _on_camera_spawned() -> void:
     if _round_state == RoundState.CAMERA_SPAWN:
         _round_state = RoundState.DUEL
-        print("time to duel")

@@ -1,0 +1,107 @@
+[gd_scene load_steps=13 format=3 uid="uid://cppt812y26w4h"]
+
+[ext_resource type="PackedScene" uid="uid://bjte3uss16tqe" path="res://src/player.tscn" id="1_wqvko"]
+[ext_resource type="Script" uid="uid://q6gs7ulvu8gr" path="res://src/Duel/director.gd" id="2_cdx1q"]
+[ext_resource type="Script" uid="uid://cqu6rpwkgcv8h" path="res://src/Effects/camera_pivot.gd" id="3_4bcji"]
+[ext_resource type="PackedScene" uid="uid://br16sg8547t7i" path="res://src/enemy.tscn" id="4_uktfx"]
+[ext_resource type="Script" uid="uid://blos8e0uuxvlj" path="res://src/Effects/ready_splash.gd" id="5_y2hwx"]
+[ext_resource type="Texture2D" uid="uid://deent048t5wau" path="res://res/sprites/ready.png" id="6_qiocs"]
+[ext_resource type="Texture2D" uid="uid://d235es3e48ih3" path="res://res/sprites/ready_loadbar.png" id="7_xdrfk"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_g3j30"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_5q4o7"]
+sky_material = SubResource("ProceduralSkyMaterial_g3j30")
+
+[sub_resource type="Environment" id="Environment_a7soy"]
+background_mode = 2
+sky = SubResource("Sky_5q4o7")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ts572"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_aikvj"]
+material = SubResource("StandardMaterial3D_ts572")
+size = Vector2(14, 4)
+
+[node name="game" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_a7soy")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Level" type="Node3D" parent="."]
+
+[node name="floor" type="MeshInstance3D" parent="Level"]
+mesh = SubResource("PlaneMesh_aikvj")
+
+[node name="Player" parent="." instance=ExtResource("1_wqvko")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -2.5, 0, 0)
+
+[node name="Director" type="Node3D" parent="." node_paths=PackedStringArray("_camera_pivot", "_player", "_enemy", "_ready_splash")]
+script = ExtResource("2_cdx1q")
+_camera_pivot = NodePath("../CameraPivot")
+_player = NodePath("../Player")
+_enemy = NodePath("../Enemy")
+_ready_splash = NodePath("../CanvasLayer/ReadySplash")
+
+[node name="CameraPivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45822525, 0)
+script = ExtResource("3_4bcji")
+
+[node name="Camera3D" type="Camera3D" parent="CameraPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 5.5)
+fov = 54.0
+
+[node name="Enemy" parent="." instance=ExtResource("4_uktfx")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 2.5, 0, 0)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ReadySplash" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+script = ExtResource("5_y2hwx")
+
+[node name="ReadySprite" type="TextureRect" parent="CanvasLayer/ReadySplash"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 368.0
+offset_top = 238.0
+offset_right = 744.0
+offset_bottom = 370.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("6_qiocs")
+
+[node name="Mask" type="Polygon2D" parent="CanvasLayer/ReadySplash"]
+clip_children = 1
+polygon = PackedVector2Array(397, 374, 671, 374, 671, 376, 670, 376, 670, 378, 669, 378, 669, 380, 668, 380, 668, 382, 667, 382, 667, 383, 393, 383, 393, 382, 394, 382, 394, 380, 395, 380, 395, 378, 396, 378, 396, 376, 397, 376)
+
+[node name="ReadyLoadBar" type="TextureRect" parent="CanvasLayer/ReadySplash/Mask"]
+texture_filter = 1
+offset_left = 393.0
+offset_top = 374.0
+offset_right = 671.0
+offset_bottom = 383.0
+mouse_filter = 2
+texture = ExtResource("7_xdrfk")
+expand_mode = 1
+stretch_mode = 1
