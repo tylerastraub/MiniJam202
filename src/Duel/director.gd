@@ -28,12 +28,17 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
     if _round_state == RoundState.DUEL:
         duel(delta)
-    if _round_state == RoundState.WON:
+    elif _round_state == RoundState.WON:
+        pass
+    elif _round_state == RoundState.LOST:
         pass
 
 func duel(delta: float) -> void:
-    if _player.get_stats().health < 1:
+    if _player.get_state() == DuelAI.State.DEAD:
         _round_state = RoundState.LOST
+        for enemy in _enemy_list:
+            if enemy.get_stats().health > 0:
+                enemy._ai._state = DuelAI.State.SHEATH
         return
     
     if _player.action(_duel_timer):
@@ -52,6 +57,8 @@ func duel(delta: float) -> void:
     var enemies_alive : bool = false
     for enemy in _enemy_list:
         if enemy.get_stats().health < 1:
+            if enemy.get_state() == DuelAI.State.HURT:
+                enemies_alive = true
             continue
         enemies_alive = true
         if enemy.action(_duel_timer):
@@ -65,7 +72,9 @@ func duel(delta: float) -> void:
                 _player.strike(false)
 
     if enemies_alive == false:
+        print("round won")
         _round_state = RoundState.WON
+        _player._ai._state = DuelAI.State.SHEATH
 
     _duel_timer += delta
 

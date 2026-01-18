@@ -12,17 +12,18 @@ enum State {
 }
 
 var _stats : DuelStats
-var _state : State
+var _state : State = State.NOVAL
+var _last_state : State = State.NOVAL
 
 func ai_init(stats: DuelStats) -> void:
     _stats = stats
-    _state = State.READY
+    set_state(State.READY)
 
 # returns true if action ready to be taken for this turn
 func action(timer: float) -> bool:
     if timer > _stats.draw_time and _stats.attacked == false:
         _stats.attacked = true
-        _state = State.DRAW
+        set_state(State.DRAW)
         return true
     return false
 
@@ -48,4 +49,10 @@ func strike(critical: bool) -> void:
         _stats.health = 0
     else:
         _stats.health -= 1
-    _state = State.HURT
+    set_state(State.HURT)
+
+func set_state(state: State) -> void:
+    if _state == state:
+        return
+    _last_state = _state
+    _state = state
