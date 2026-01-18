@@ -26,6 +26,17 @@ var _upgrade_levels : Dictionary = {
 func _input(_event: InputEvent) -> void:
     if Input.is_action_just_released("pause"):
         get_tree().quit()
+    if Input.is_action_just_released("reload_duel"):
+        if _game != null:
+            remove_child(_game)
+            _game = null
+        if _upgrade_store != null:
+            remove_child(_upgrade_store)
+            _upgrade_store = null
+        _game = _game_scene.instantiate()
+        _game.set_player_stats(_player_stats)
+        _game.set_player_gold(_player_gold)
+        add_child(_game)
 
 func _ready() -> void:
     _player_stats = DuelStats.new()

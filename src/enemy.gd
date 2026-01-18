@@ -2,6 +2,16 @@ extends Node3D
 
 class_name Enemy
 
+var _textures : Array[Texture2D] = []
+var tex1 : Texture2D = preload("res://res/textures/t_enemy1.png")
+var tex2 : Texture2D = preload("res://res/textures/t_enemy2.png")
+var tex3 : Texture2D = preload("res://res/textures/t_enemy3.png")
+var tex4 : Texture2D = preload("res://res/textures/t_enemy4.png")
+var tex5 : Texture2D = preload("res://res/textures/t_enemy5.png")
+var tex6 : Texture2D = preload("res://res/textures/t_enemy6.png")
+var tex7 : Texture2D = preload("res://res/textures/t_enemy7.png")
+var tex8 : Texture2D = preload("res://res/textures/t_enemy8.png")
+
 var _shake : ShakeEffect
 
 var _ai : DuelAI
@@ -18,6 +28,12 @@ func _init() -> void:
     var stats : DuelStats = DuelStats.new()
     stats.draw_time = 2.0
     _ai.ai_init(stats)
+
+func _ready() -> void:
+    load_textures()
+    var mat : StandardMaterial3D = $SamuraiMesh/Armature/Skeleton3D/samurai.get_surface_override_material(0)
+    mat.albedo_texture = _textures[randi() % _textures.size()]
+    $SamuraiMesh/Armature/Skeleton3D/samurai.set_surface_override_material(0, mat)
 
 func _physics_process(delta: float) -> void:
     var coefficient : float = 1.0 if randi() % 2 else -1.0
@@ -103,3 +119,13 @@ func update_sword_meshes() -> void:
         $SamuraiMesh/Armature/Skeleton3D/HandAttachment/sword_sheathed.visible = false
         $SamuraiMesh/Armature/Skeleton3D/HipAttachment/sheath2.visible = false
         $SamuraiMesh/Armature/Skeleton3D/HipAttachment/sword_sheathed.visible = true
+
+func load_textures() -> void:
+    _textures.push_back(tex1)
+    _textures.push_back(tex2)
+    _textures.push_back(tex3)
+    _textures.push_back(tex4)
+    _textures.push_back(tex5)
+    _textures.push_back(tex6)
+    _textures.push_back(tex7)
+    _textures.push_back(tex8)
