@@ -7,7 +7,7 @@ var _game : Game = null
 var _upgrade_store : UpgradeStore = null
 
 var _player_stats : DuelStats
-var _player_gold : int = 100
+var _player_gold : int = 25
 
 var _upgrade_costs : Dictionary = {
     UpgradeItem.Type.DRAW_SPEED : 10,
@@ -33,16 +33,25 @@ func _input(_event: InputEvent) -> void:
         if _upgrade_store != null:
             remove_child(_upgrade_store)
             _upgrade_store = null
-        _game = _game_scene.instantiate()
-        _player_stats.attacked = false
-        _game.set_player_stats(_player_stats)
-        _game.set_player_gold(_player_gold)
-        add_child(_game)
-        _game.start_round()
+        _on_next_duel()
 
 func _ready() -> void:
     _player_stats = DuelStats.new()
+    go_to_shop(_player_stats, _player_gold)
+
+func get_upgrade_cost(type: UpgradeItem.Type) -> int:
+    return ceili(_upgrade_levels[type] * _upgrade_costs[type])
+
+func go_to_shop(stats: DuelStats, gold: int) -> void:
+    if _game != null:
+        remove_child(_game)
+        _game = null
+    if _upgrade_store != null:
+        remove_child(_upgrade_store)
+        _upgrade_store = null
     
+    _player_stats = stats
+    _player_gold = gold
     _upgrade_store = _upgrade_store_scene.instantiate()
     _upgrade_store.update_upgrade_item(
         UpgradeItem.Type.DRAW_SPEED,
@@ -78,9 +87,6 @@ func _ready() -> void:
     
     add_child(_upgrade_store)
 
-func get_upgrade_cost(type: UpgradeItem.Type) -> int:
-    return ceili(_upgrade_levels[type] * _upgrade_costs[type])
-
 func _on_upgrade_bought(type: UpgradeItem.Type, new_value: float, cost: int) -> void:
     _player_gold -= cost
     var coefficient : float = 1.0
@@ -105,10 +111,19 @@ func _on_upgrade_bought(type: UpgradeItem.Type, new_value: float, cost: int) -> 
 func _on_next_duel() -> void:
     _game = _game_scene.instantiate()
     _player_stats.attacked = false
+    var level_sum : float = 0.0
+    for key in _upgrade_levels:
+        level_sum += (_upgrade_levels[key] - 1) * 10
+    _player_stats.bounty = ceili(10 + level_sum * 4.0 + randi_range(-4, 4))
     _game.set_player_stats(_player_stats)
     _game.set_player_gold(_player_gold)
+    _game.returnToShop.connect(go_to_shop)
     add_child(_game)
+
+    if _upgrade_store != null:
+        remove_child(_upgrade_store)
+        _upgrade_store = null
+
     _game.start_round()
     
-    remove_child(_upgrade_store)
-    _upgrade_store = null
+    

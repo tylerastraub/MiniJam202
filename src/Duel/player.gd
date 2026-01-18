@@ -58,6 +58,9 @@ func strike(critical: bool) -> void:
 func set_state(state: DuelAI.State) -> void:
     _ai.set_state(state)
 
+func set_gold(gold: int) -> void:
+    _gold = gold
+
 func get_stats() -> DuelStats:
     return _ai._stats
 
@@ -66,6 +69,9 @@ func get_state() -> DuelAI.State:
 
 func get_last_state() -> DuelAI.State:
     return _ai._last_state
+
+func get_gold() -> int:
+    return _gold
 
 func animate(_delta: float) -> void:
     _animation.set("parameters/conditions/draw", get_state() == DuelAI.State.DRAW)

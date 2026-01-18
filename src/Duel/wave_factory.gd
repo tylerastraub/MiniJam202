@@ -17,6 +17,9 @@ static var parry_chance_range : float = 0.05
 static var base_health : int = 1
 static var health_range : int = 0
 
+static var base_bounty : int = 10
+static var bounty_range : int = 5
+
 static func generate_wave() -> Array[DuelStats]:
     var res : Array[DuelStats] = []
 
@@ -29,6 +32,7 @@ static func generate_wave() -> Array[DuelStats]:
         stats.critical_chance = base_critical_chance + randf_range(critical_chance_range * -1.0, critical_chance_range)
         stats.parry_chance = base_parry_chance + randf_range(parry_chance_range * -1.0, parry_chance_range)
         stats.health = base_health + randi_range(0, health_range)
+        stats.bounty = base_bounty + randi_range(bounty_range * -1, bounty_range)
         res.push_back(stats)
 
     return res

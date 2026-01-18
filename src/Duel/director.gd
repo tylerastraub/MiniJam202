@@ -11,9 +11,12 @@ enum RoundState {
     LOST,
 }
 
+signal duelComplete(won: bool, gold_won: int)
+
 @export var _camera_pivot : CameraPivot = null
 @export var _player : Player = null
 @export var _ready_splash : ReadySplash = null
+@export var _round_end_screen : RoundEndScreen = null
 
 var _enemy_scene : PackedScene = preload("res://src/Duel/enemy.tscn")
 var _enemy_list : Array[Enemy] = []
@@ -30,9 +33,10 @@ var _round_state : RoundState = RoundState.NOVAL
 
 func start_round() -> void:
     spawn_enemies()
-    _round_state = RoundState.CAMERA_SPAWN
+    set_round_state(RoundState.CAMERA_SPAWN)
     _camera_pivot.spawn()
     _camera_pivot.cameraSpawned.connect(_on_camera_spawned)
+    _round_end_screen.continuePressed.connect(_on_continue_pressed)
     _ready_splash.call_deferred("start_ready_splash")
 
 func _physics_process(delta: float) -> void:
@@ -45,7 +49,7 @@ func _physics_process(delta: float) -> void:
 
 func duel(delta: float) -> void:
     if _player.get_state() == DuelAI.State.DEAD:
-        _round_state = RoundState.LOST
+        set_round_state(RoundState.LOST)
         for enemy in _enemy_list:
             if enemy.get_stats().health > 0:
                 enemy._ai._state = DuelAI.State.SHEATH
@@ -100,7 +104,7 @@ func duel(delta: float) -> void:
 
     if enemies_alive == false:
         print("round won")
-        _round_state = RoundState.WON
+        set_round_state(RoundState.WON)
         _player._ai._state = DuelAI.State.SHEATH
 
     _multi_attack_timer += delta
@@ -119,7 +123,22 @@ func spawn_enemies() -> void:
         _enemy_list.push_back(enemy)
         _enemy_attacked.push_back(false)
 
+func set_round_state(state: RoundState) -> void:
+    if state == _round_state:
+        return
+    _round_state = state
+    if _round_state == RoundState.WON:
+        var gold_won : int = 0
+        for e in _enemy_list:
+            gold_won += e.get_stats().bounty
+        _round_end_screen.display(true, gold_won)
+    elif _round_state == RoundState.LOST:
+        _round_end_screen.display(false, _player.get_stats().bounty * -1)
+
 func _on_camera_spawned() -> void:
     if _round_state == RoundState.CAMERA_SPAWN:
-        _round_state = RoundState.DUEL
+        set_round_state(RoundState.DUEL)
         print("begin duel")
+
+func _on_continue_pressed() -> void:
+    duelComplete.emit(_round_end_screen._won, _round_end_screen._gold_won)

@@ -8,3 +8,5 @@ var multi_hit_chance : float = 0.1
 var parry_chance : float = 0.1
 
 var health : int = 1
+
+var bounty : int = 0
