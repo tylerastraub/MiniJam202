@@ -1,0 +1,10 @@
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://chdy4l3l6ghjk"]
+
+[ext_resource type="FontFile" uid="uid://e4ouk7pa0f1g" path="res://res/fonts/vhs-gothic.ttf" id="1_fhx8b"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fhx8b"]
+draw_center = false
+
+[resource]
+default_font = ExtResource("1_fhx8b")
+Button/styles/focus = SubResource("StyleBoxFlat_fhx8b")

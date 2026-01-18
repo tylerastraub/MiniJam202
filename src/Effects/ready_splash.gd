@@ -3,7 +3,7 @@ extends Control
 class_name ReadySplash
 
 var _timer : float = 0.0
-var _load_time : float = 2.0
+var _load_time : float = 2.2
 @onready var _load_bar_starting_x : float = $Mask/ReadyLoadBar.position.x
 @onready var _load_bar_starting_size_x : float = $Mask/ReadyLoadBar.size.x
 

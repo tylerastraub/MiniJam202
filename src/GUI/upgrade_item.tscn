@@ -1,0 +1,60 @@
+[gd_scene load_steps=4 format=3 uid="uid://ceoysbhimj0de"]
+
+[ext_resource type="Script" uid="uid://cbra4o7gq3cf7" path="res://src/GUI/upgrade_item.gd" id="1_15r2w"]
+[ext_resource type="Texture2D" uid="uid://dh4pppw5etgld" path="res://res/sprites/upgrade_icons.png" id="1_q26fp"]
+[ext_resource type="Theme" uid="uid://chdy4l3l6ghjk" path="res://res/themes/store_theme.tres" id="2_avqe2"]
+
+[node name="UpgradeItem" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 526.0
+offset_bottom = 80.0
+script = ExtResource("1_15r2w")
+
+[node name="UpgradeTypeLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 80.0
+offset_top = 8.0
+offset_right = 384.0
+offset_bottom = 56.0
+theme = ExtResource("2_avqe2")
+theme_override_font_sizes/font_size = 24
+text = "NULL"
+vertical_alignment = 1
+
+[node name="Icon" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(40, 40)
+texture = ExtResource("1_q26fp")
+region_enabled = true
+region_rect = Rect2(0, 0, 64, 64)
+
+[node name="BuyButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 422.0
+offset_top = 16.0
+offset_right = 518.0
+offset_bottom = 48.0
+theme = ExtResource("2_avqe2")
+text = "BUY"
+
+[node name="CostLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 422.0
+offset_top = 52.0
+offset_right = 518.0
+offset_bottom = 72.0
+theme = ExtResource("2_avqe2")
+theme_override_font_sizes/font_size = 12
+text = "0 GOLD"
+horizontal_alignment = 1
+
+[node name="UpgradeAmountLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 80.0
+offset_top = 52.0
+offset_right = 384.0
+offset_bottom = 72.0
+theme = ExtResource("2_avqe2")
+theme_override_font_sizes/font_size = 12
+text = "0 → 1"

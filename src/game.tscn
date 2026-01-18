@@ -1,6 +1,8 @@
 [gd_scene load_steps=13 format=3 uid="uid://cppt812y26w4h"]
 
+[ext_resource type="Script" uid="uid://b04ms00mqxrfl" path="res://src/game.gd" id="1_cdx1q"]
 [ext_resource type="PackedScene" uid="uid://bjte3uss16tqe" path="res://src/player.tscn" id="1_wqvko"]
+[ext_resource type="PackedScene" uid="uid://dx5mbtp2jg4i2" path="res://res/models/courtyard.glb" id="2_4bcji"]
 [ext_resource type="Script" uid="uid://q6gs7ulvu8gr" path="res://src/Duel/director.gd" id="2_cdx1q"]
 [ext_resource type="Script" uid="uid://cqu6rpwkgcv8h" path="res://src/Effects/camera_pivot.gd" id="3_4bcji"]
 [ext_resource type="PackedScene" uid="uid://br16sg8547t7i" path="res://src/enemy.tscn" id="4_uktfx"]
@@ -21,13 +23,8 @@ sky = SubResource("Sky_5q4o7")
 tonemap_mode = 2
 glow_enabled = true
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ts572"]
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_aikvj"]
-material = SubResource("StandardMaterial3D_ts572")
-size = Vector2(14, 4)
-
 [node name="game" type="Node3D"]
+script = ExtResource("1_cdx1q")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_a7soy")
@@ -38,8 +35,8 @@ shadow_enabled = true
 
 [node name="Level" type="Node3D" parent="."]
 
-[node name="floor" type="MeshInstance3D" parent="Level"]
-mesh = SubResource("PlaneMesh_aikvj")
+[node name="courtyard" parent="Level" instance=ExtResource("2_4bcji")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 
 [node name="Player" parent="." instance=ExtResource("1_wqvko")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -2.5, 0, 0)

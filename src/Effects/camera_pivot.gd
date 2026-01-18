@@ -16,7 +16,6 @@ func spawn() -> void:
     _spawning = true
 
 func _physics_process(delta: float) -> void:
-    #print(rad_to_deg(rotation.y))
     _spawn_counter = lerpf(_spawn_counter, 1.0, _spawn_speed * delta)
     rotation.y = deg_to_rad(_spawn_counter * 360)
     position.y = STARTING_Y - STARTING_Y * _spawn_counter

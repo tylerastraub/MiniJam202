@@ -81,3 +81,4 @@ func duel(delta: float) -> void:
 func _on_camera_spawned() -> void:
     if _round_state == RoundState.CAMERA_SPAWN:
         _round_state = RoundState.DUEL
+        print("begin duel")

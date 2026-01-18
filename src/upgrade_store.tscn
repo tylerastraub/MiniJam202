@@ -1,3 +1,124 @@
-[gd_scene format=3 uid="uid://c14q3gfvigjtf"]
+[gd_scene load_steps=9 format=3 uid="uid://c14q3gfvigjtf"]
+
+[ext_resource type="Script" uid="uid://digc2c6f11jqi" path="res://src/upgrade_store.gd" id="1_fofkg"]
+[ext_resource type="PackedScene" uid="uid://dml8aua0as0nb" path="res://res/models/samurai.glb" id="1_jcm6l"]
+[ext_resource type="Theme" uid="uid://chdy4l3l6ghjk" path="res://res/themes/store_theme.tres" id="3_66wd1"]
+[ext_resource type="Texture2D" uid="uid://3ilpd4gb8gqv" path="res://res/sprites/gold.png" id="4_u67nv"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_jcm6l"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_fofkg"]
+sky_material = SubResource("ProceduralSkyMaterial_jcm6l")
+
+[sub_resource type="Environment" id="Environment_66wd1"]
+background_mode = 2
+sky = SubResource("Sky_fofkg")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jcm6l"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.101960786, 0.101960786, 0.101960786, 0.60784316)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+corner_detail = 5
 
 [node name="UpgradeStore" type="Node3D"]
+script = ExtResource("1_fofkg")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_66wd1")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.94024885, 1.2296646, 2.2308235)
+fov = 54.0
+
+[node name="samurai2" parent="." instance=ExtResource("1_jcm6l")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -576.0
+offset_top = -324.0
+offset_bottom = 324.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="StorePanel" type="Panel" parent="CanvasLayer/MarginContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_jcm6l")
+
+[node name="NextDuelButton" type="Button" parent="CanvasLayer/MarginContainer/StorePanel"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -104.0
+offset_top = -40.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("3_66wd1")
+text = "Next Duel"
+
+[node name="UpgradeItems" type="Control" parent="CanvasLayer/MarginContainer/StorePanel"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 5.0
+offset_top = 20.0
+offset_right = -5.0
+offset_bottom = 276.0
+grow_horizontal = 2
+
+[node name="GoldIcon" type="TextureRect" parent="CanvasLayer/MarginContainer/StorePanel"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -28.0
+offset_top = 5.0
+offset_right = -5.0
+offset_bottom = 28.0
+grow_horizontal = 0
+texture = ExtResource("4_u67nv")
+
+[node name="GoldLabel" type="Label" parent="CanvasLayer/MarginContainer/StorePanel"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -531.0
+offset_top = 5.0
+offset_right = -31.0
+offset_bottom = 28.0
+grow_horizontal = 0
+theme = ExtResource("3_66wd1")
+text = "0"
+horizontal_alignment = 2
+vertical_alignment = 1
