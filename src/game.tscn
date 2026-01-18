@@ -1,11 +1,11 @@
 [gd_scene load_steps=13 format=3 uid="uid://cppt812y26w4h"]
 
 [ext_resource type="Script" uid="uid://b04ms00mqxrfl" path="res://src/game.gd" id="1_cdx1q"]
-[ext_resource type="PackedScene" uid="uid://bjte3uss16tqe" path="res://src/player.tscn" id="1_wqvko"]
+[ext_resource type="PackedScene" uid="uid://bjte3uss16tqe" path="res://src/Duel/player.tscn" id="1_wqvko"]
 [ext_resource type="PackedScene" uid="uid://dx5mbtp2jg4i2" path="res://res/models/courtyard.glb" id="2_4bcji"]
 [ext_resource type="Script" uid="uid://q6gs7ulvu8gr" path="res://src/Duel/director.gd" id="2_cdx1q"]
 [ext_resource type="Script" uid="uid://cqu6rpwkgcv8h" path="res://src/Effects/camera_pivot.gd" id="3_4bcji"]
-[ext_resource type="PackedScene" uid="uid://br16sg8547t7i" path="res://src/enemy.tscn" id="4_uktfx"]
+[ext_resource type="PackedScene" uid="uid://br16sg8547t7i" path="res://src/Duel/enemy.tscn" id="4_uktfx"]
 [ext_resource type="Script" uid="uid://blos8e0uuxvlj" path="res://src/Effects/ready_splash.gd" id="5_y2hwx"]
 [ext_resource type="Texture2D" uid="uid://deent048t5wau" path="res://res/sprites/ready.png" id="6_qiocs"]
 [ext_resource type="Texture2D" uid="uid://d235es3e48ih3" path="res://res/sprites/ready_loadbar.png" id="7_xdrfk"]

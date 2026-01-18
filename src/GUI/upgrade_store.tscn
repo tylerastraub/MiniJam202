@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://c14q3gfvigjtf"]
 
-[ext_resource type="Script" uid="uid://digc2c6f11jqi" path="res://src/upgrade_store.gd" id="1_fofkg"]
+[ext_resource type="Script" uid="uid://digc2c6f11jqi" path="res://src/GUI/upgrade_store.gd" id="1_fofkg"]
 [ext_resource type="PackedScene" uid="uid://dml8aua0as0nb" path="res://res/models/samurai.glb" id="1_jcm6l"]
 [ext_resource type="Theme" uid="uid://chdy4l3l6ghjk" path="res://res/themes/store_theme.tres" id="3_66wd1"]
 [ext_resource type="Texture2D" uid="uid://3ilpd4gb8gqv" path="res://res/sprites/gold.png" id="4_u67nv"]

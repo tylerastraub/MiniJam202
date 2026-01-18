@@ -1,7 +1,7 @@
 extends Node3D
 
 var _game_scene : PackedScene = preload("res://src/game.tscn")
-var _upgrade_store_scene : PackedScene = preload("res://src/upgrade_store.tscn")
+var _upgrade_store_scene : PackedScene = preload("res://src/GUI/upgrade_store.tscn")
 
 var _game : Game = null
 var _upgrade_store : UpgradeStore = null
