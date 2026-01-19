@@ -55,6 +55,7 @@ func strike(critical: bool) -> void:
     set_state(State.HURT)
 
 func set_state(state: State) -> void:
+    print("DuelAI.set_state() - changing from " + str(_state) + " to " + str(state))
     if _state == state:
         return
     _last_state = _state

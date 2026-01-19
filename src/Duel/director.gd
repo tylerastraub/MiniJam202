@@ -71,7 +71,7 @@ func duel(delta: float) -> void:
             enemies_attacking = true
             break
     
-    if _player.action(_duel_timer) and _player.get_state() != DuelAI.State.HURT:
+    if _player.action(_duel_timer) and _player.get_stats().health > 0:
         _p_attack = _player.attack()
         if _p_attack.num_of_hits > 1:
             _multi_attacking = true
@@ -90,8 +90,8 @@ func duel(delta: float) -> void:
                 $SwordHitAudio.play()
             
     if _multi_attacking:
-        for i in range(_p_attack.num_of_hits):
-            if i >= _enemy_list.size():
+        for i in range(_enemy_list.size()):
+            if i >= _p_attack.num_of_hits:
                 break
             var multi_attack_index : int = int(_multi_attack_timer / _multi_attack_delay)
             if multi_attack_index >= _enemy_list.size():
@@ -113,29 +113,32 @@ func duel(delta: float) -> void:
                 $SwordHitAudio.play()
 
     var enemies_alive : bool = false
-    for i in range(_enemy_list.size()):
-        var enemy := _enemy_list[i]
-        if enemy.get_stats().health < 1:
-            if enemy.get_state() == DuelAI.State.HURT:
-                enemies_alive = true
-            else:
+    if _multi_attacking == false:
+        for i in range(_enemy_list.size()):
+            var enemy := _enemy_list[i]
+            if enemy.get_stats().health < 1:
+                if enemy.get_state() == DuelAI.State.HURT:
+                    enemies_alive = true
+                else:
+                    _enemies_who_attacked[i] = true
+                continue
+            enemies_alive = true
+            if enemy.action(_duel_timer):
+                $SwordSwingAudio.play()
                 _enemies_who_attacked[i] = true
-            continue
+                var e_attack : Attack = enemy.attack()
+                if e_attack.criticals[0]:
+                    _player.strike(true)
+                    $SwordHitAudio.play()
+                    create_critical_text(_player)
+                elif _player.defend() == true:
+                    print("player defended!")
+                    create_parry_shield(_player)
+                else:
+                    _player.strike(false)
+                    $SwordHitAudio.play()
+    else:
         enemies_alive = true
-        if enemy.action(_duel_timer):
-            $SwordSwingAudio.play()
-            _enemies_who_attacked[i] = true
-            var e_attack : Attack = enemy.attack()
-            if e_attack.criticals[0]:
-                _player.strike(true)
-                $SwordHitAudio.play()
-                create_critical_text(_player)
-            elif _player.defend() == true:
-                print("player defended!")
-                create_parry_shield(_player)
-            else:
-                _player.strike(false)
-                $SwordHitAudio.play()
 
     if enemies_alive == false:
         print("round won")
@@ -162,6 +165,7 @@ func spawn_enemies(enemy_stats: Array[DuelStats]) -> void:
         _enemies_who_attacked.push_back(false)
 
 func set_round_state(state: RoundState) -> void:
+    print("Director.set_round_state() - changing state from " + str(int(_round_state)) + " to " + str(int(state)))
     if state == _round_state:
         return
     _round_state = state
