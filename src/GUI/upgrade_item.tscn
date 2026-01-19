@@ -49,12 +49,15 @@ theme_override_font_sizes/font_size = 12
 text = "0 GOLD"
 horizontal_alignment = 1
 
-[node name="UpgradeAmountLabel" type="Label" parent="."]
+[node name="UpgradeAmountLabel" type="RichTextLabel" parent="."]
 layout_mode = 0
 offset_left = 80.0
 offset_top = 52.0
 offset_right = 384.0
 offset_bottom = 72.0
 theme = ExtResource("2_avqe2")
-theme_override_font_sizes/font_size = 12
+bbcode_enabled = true
 text = "0 → 1"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0

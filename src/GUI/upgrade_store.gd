@@ -14,7 +14,7 @@ var _gold : int = 0
 func _ready() -> void:
     $CanvasLayer/MarginContainer/StorePanel/NextDuelButton.pressed.connect(_on_next_duel_pressed)
 
-func update_upgrade_item(type: UpgradeItem.Type, from: float, to: float, cost: int, gold_available: int) -> void:
+func update_upgrade_item(type: UpgradeItem.Type, from: float, to: float, cost: int, gold_available: int, max_upgrade: float) -> void:
     var upgrade_item : UpgradeItem = null
     for ui in _upgrade_items:
         if ui._type == type:
@@ -26,6 +26,7 @@ func update_upgrade_item(type: UpgradeItem.Type, from: float, to: float, cost: i
     upgrade_item.set_upgrade_amount(from, to)
     upgrade_item.set_cost(cost)
     upgrade_item.set_gold_available(gold_available)
+    upgrade_item.set_max_upgrade(max_upgrade)
     if _upgrade_items.find(upgrade_item) == -1:
         upgrade_item.position.y = _upgrade_items.size() * upgrade_item.size.y
         upgrade_item.upgradeBought.connect(_on_upgrade_bought)
@@ -36,9 +37,9 @@ func update_upgrade_item(type: UpgradeItem.Type, from: float, to: float, cost: i
 
 func _on_upgrade_bought(upgrade_item: UpgradeItem) -> void:
     _gold -= upgrade_item._cost
-    upgradeBought.emit(upgrade_item._type, upgrade_item._upgrade_to, upgrade_item._cost)
     for ui in _upgrade_items:
         ui.set_gold_available(_gold)
+    upgradeBought.emit(upgrade_item._type, upgrade_item._upgrade_to, upgrade_item._cost)
 
 func _on_next_duel_pressed() -> void:
     nextDuel.emit()

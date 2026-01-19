@@ -7,13 +7,13 @@ var _game : Game = null
 var _upgrade_store : UpgradeStore = null
 
 var _player_stats : DuelStats
-var _player_gold : int = 25
+var _player_gold : int = 10000
 
 var _upgrade_costs : Dictionary = {
-    UpgradeItem.Type.DRAW_SPEED : 10,
-    UpgradeItem.Type.CRITICAL_CHANCE : 10,
-    UpgradeItem.Type.MULTI_HIT_CHANCE : 10,
-    UpgradeItem.Type.PARRY_CHANCE : 10,
+    UpgradeItem.Type.DRAW_SPEED : 99,
+    UpgradeItem.Type.CRITICAL_CHANCE : 99,
+    UpgradeItem.Type.MULTI_HIT_CHANCE : 99,
+    UpgradeItem.Type.PARRY_CHANCE : 99,
 }
 
 var _upgrade_levels : Dictionary = {
@@ -21,6 +21,13 @@ var _upgrade_levels : Dictionary = {
     UpgradeItem.Type.CRITICAL_CHANCE : 1.0,
     UpgradeItem.Type.MULTI_HIT_CHANCE : 1.0,
     UpgradeItem.Type.PARRY_CHANCE : 1.0,
+}
+
+var _upgrade_maxes : Dictionary = {
+    UpgradeItem.Type.DRAW_SPEED : 0.01,
+    UpgradeItem.Type.CRITICAL_CHANCE : 0.99,
+    UpgradeItem.Type.MULTI_HIT_CHANCE : 1.0,
+    UpgradeItem.Type.PARRY_CHANCE : 0.99,
 }
 
 func _input(_event: InputEvent) -> void:
@@ -40,7 +47,7 @@ func _ready() -> void:
     go_to_shop(_player_stats, _player_gold)
 
 func get_upgrade_cost(type: UpgradeItem.Type) -> int:
-    return ceili(_upgrade_levels[type] * _upgrade_costs[type])
+    return ceili(10 + (_upgrade_levels[type] - 1.0) * _upgrade_costs[type])
 
 func go_to_shop(stats: DuelStats, gold: int) -> void:
     if _game != null:
@@ -56,30 +63,34 @@ func go_to_shop(stats: DuelStats, gold: int) -> void:
     _upgrade_store.update_upgrade_item(
         UpgradeItem.Type.DRAW_SPEED,
         _player_stats.draw_time,
-        _player_stats.draw_time - 0.1,
+        max(_player_stats.draw_time - 0.1, _upgrade_maxes[UpgradeItem.Type.DRAW_SPEED]),
         get_upgrade_cost(UpgradeItem.Type.DRAW_SPEED),
-        _player_gold
+        _player_gold,
+        _upgrade_maxes[UpgradeItem.Type.DRAW_SPEED]
     )
     _upgrade_store.update_upgrade_item(
         UpgradeItem.Type.CRITICAL_CHANCE,
         _player_stats.critical_chance,
-        _player_stats.critical_chance + 0.1,
+        min(_player_stats.critical_chance + 0.1, _upgrade_maxes[UpgradeItem.Type.CRITICAL_CHANCE]),
         get_upgrade_cost(UpgradeItem.Type.CRITICAL_CHANCE),
-        _player_gold
+        _player_gold,
+        _upgrade_maxes[UpgradeItem.Type.CRITICAL_CHANCE]
     )
     _upgrade_store.update_upgrade_item(
         UpgradeItem.Type.MULTI_HIT_CHANCE,
         _player_stats.multi_hit_chance,
-        _player_stats.multi_hit_chance + 0.1,
+        min(_player_stats.multi_hit_chance + 0.1, _upgrade_maxes[UpgradeItem.Type.MULTI_HIT_CHANCE]),
         get_upgrade_cost(UpgradeItem.Type.MULTI_HIT_CHANCE),
-        _player_gold
+        _player_gold,
+        _upgrade_maxes[UpgradeItem.Type.MULTI_HIT_CHANCE]
     )
     _upgrade_store.update_upgrade_item(
         UpgradeItem.Type.PARRY_CHANCE,
         _player_stats.parry_chance,
-        _player_stats.parry_chance + 0.1,
+        min(_player_stats.parry_chance + 0.1, _upgrade_maxes[UpgradeItem.Type.PARRY_CHANCE]),
         get_upgrade_cost(UpgradeItem.Type.PARRY_CHANCE),
-        _player_gold
+        _player_gold,
+        _upgrade_maxes[UpgradeItem.Type.PARRY_CHANCE]
     )
     
     _upgrade_store.upgradeBought.connect(_on_upgrade_bought)
@@ -89,23 +100,28 @@ func go_to_shop(stats: DuelStats, gold: int) -> void:
 
 func _on_upgrade_bought(type: UpgradeItem.Type, new_value: float, cost: int) -> void:
     _player_gold -= cost
-    var coefficient : float = 1.0
+    var next_upgrade : float = 0.0
     if type == UpgradeItem.Type.DRAW_SPEED:
         _player_stats.draw_time = new_value
-        coefficient = -1.0
+        next_upgrade = max(new_value - 0.1, _upgrade_maxes[type])
     elif type == UpgradeItem.Type.CRITICAL_CHANCE:
         _player_stats.critical_chance = new_value
+        next_upgrade = min(new_value + 0.1, _upgrade_maxes[type])
     elif type == UpgradeItem.Type.MULTI_HIT_CHANCE:
         _player_stats.multi_hit_chance = new_value
+        next_upgrade = min(new_value + 0.1, _upgrade_maxes[type])
     elif type == UpgradeItem.Type.PARRY_CHANCE:
         _player_stats.parry_chance = new_value
+        next_upgrade = min(new_value + 0.1, _upgrade_maxes[type])
     _upgrade_levels[type] += 0.1
+    
     _upgrade_store.update_upgrade_item(
         type,
         new_value,
-        new_value + 0.1 * coefficient,
+        next_upgrade,
         get_upgrade_cost(type),
-        _player_gold
+        _player_gold,
+        _upgrade_maxes[type]
     )
 
 func _on_next_duel() -> void:
