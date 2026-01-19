@@ -141,6 +141,6 @@ func _on_next_duel() -> void:
         remove_child(_upgrade_store)
         _upgrade_store = null
 
-    _game.start_round()
+    _game.start_round(level_sum)
     
     
