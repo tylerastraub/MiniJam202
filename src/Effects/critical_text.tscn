@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://b7yyehuefxel0"]
+
+[ext_resource type="Script" uid="uid://chjtdaii5v8y3" path="res://src/Effects/critical_text.gd" id="1_lw5ge"]
+[ext_resource type="FontFile" uid="uid://e4ouk7pa0f1g" path="res://res/fonts/vhs-gothic.ttf" id="1_qpofe"]
+
+[node name="CriticalText" type="Node3D"]
+script = ExtResource("1_lw5ge")
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+billboard = 2
+modulate = Color(1, 0.34901962, 0, 1)
+text = "CRITICAL!"
+font = ExtResource("1_qpofe")

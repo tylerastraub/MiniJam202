@@ -27,12 +27,16 @@ func set_type(type: Type) -> void:
     $Icon.region_rect.position.x = 64 * int(_type)
     if _type == Type.DRAW_SPEED:
         $UpgradeTypeLabel.text = "Draw Speed"
+        $HintLabel.text = "Increases draw speed"
     elif _type == Type.CRITICAL_CHANCE:
         $UpgradeTypeLabel.text = "Critical Chance"
+        $HintLabel.text = "Increases chance of hitting through parries"
     elif _type == Type.MULTI_HIT_CHANCE:
         $UpgradeTypeLabel.text = "Multi-Hit Chance"
+        $HintLabel.text = "Increases chance of hitting multiple enemies"
     elif _type == Type.PARRY_CHANCE:
         $UpgradeTypeLabel.text = "Parry Chance"
+        $HintLabel.text = "Increases chance of blocking non-critical hits"
     else:
         $UpgradeTypeLabel.text = "NULL"
 

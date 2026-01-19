@@ -20,6 +20,7 @@ signal duelComplete(round_result: RoundEndScreen.RoundResult, gold_won: int)
 @export var _round_end_screen : RoundEndScreen = null
 
 var _parry_shield_scene : PackedScene = preload("res://src/Effects/parry_shield.tscn")
+var _critical_text_scene : PackedScene = preload("res://src/Effects/critical_text.tscn")
 
 var _enemy_scene : PackedScene = preload("res://src/Duel/enemy.tscn")
 var _enemy_list : Array[Enemy] = []
@@ -80,6 +81,7 @@ func duel(delta: float) -> void:
             if _p_attack.criticals[0]:
                 _enemy_list[0].strike(true)
                 $SwordHitAudio.play()
+                create_critical_text(_enemy_list[0])
             elif _enemy_list[0].defend() == true:
                 print("enemy defended!")
                 create_parry_shield(_enemy_list[0])
@@ -102,6 +104,7 @@ func duel(delta: float) -> void:
             if _p_attack.criticals[i]:
                 _enemy_list[i].strike(true)
                 $SwordHitAudio.play()
+                create_critical_text(_enemy_list[i])
             elif _enemy_list[i].defend() == true:
                 print("enemy defended!")
                 create_parry_shield(_enemy_list[i])
@@ -126,6 +129,7 @@ func duel(delta: float) -> void:
             if e_attack.criticals[0]:
                 _player.strike(true)
                 $SwordHitAudio.play()
+                create_critical_text(_player)
             elif _player.defend() == true:
                 print("player defended!")
                 create_parry_shield(_player)
@@ -173,10 +177,16 @@ func create_parry_shield(user: Node3D) -> void:
     var shield : ParryShield = _parry_shield_scene.instantiate()
     add_child(shield)
     shield.global_position = user.global_position
-    shield.lifetimeExpired.connect(_on_parry_shield_lifetime_expired)
+    shield.lifetimeExpired.connect(_on_lifetime_expired)
 
-func _on_parry_shield_lifetime_expired(shield: ParryShield):
-    remove_child(shield)
+func create_critical_text(user: Node3D) -> void:
+    var text : CriticalText = _critical_text_scene.instantiate()
+    add_child(text)
+    text.global_position = user.global_position
+    text.lifetimeExpired.connect(_on_lifetime_expired)
+
+func _on_lifetime_expired(node: Node3D):
+    remove_child(node)
 
 func _on_camera_spawned() -> void:
     if _round_state == RoundState.CAMERA_SPAWN:

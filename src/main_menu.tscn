@@ -1,0 +1,76 @@
+[gd_scene load_steps=9 format=3 uid="uid://bwbs4hgiobj6h"]
+
+[ext_resource type="Script" uid="uid://2g6w0ujlkgd4" path="res://src/main_menu.gd" id="1_bq8pk"]
+[ext_resource type="PackedScene" uid="uid://dcwlwois5p8ku" path="res://res/models/sword.glb" id="1_guuao"]
+[ext_resource type="Theme" uid="uid://chdy4l3l6ghjk" path="res://res/themes/store_theme.tres" id="2_6w7d7"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_bq8pk"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_6w7d7"]
+sky_material = SubResource("ProceduralSkyMaterial_bq8pk")
+
+[sub_resource type="Environment" id="Environment_d3tmf"]
+background_mode = 2
+sky = SubResource("Sky_6w7d7")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5elix"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_guuao"]
+material = SubResource("StandardMaterial3D_5elix")
+size = Vector2(10, 10)
+
+[node name="MainMenu" type="Node3D"]
+script = ExtResource("1_bq8pk")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_d3tmf")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Label" type="RichTextLabel" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -223.5
+offset_top = 176.0
+offset_right = 223.5
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_6w7d7")
+theme_override_font_sizes/normal_font_size = 16
+theme_override_font_sizes/bold_font_size = 72
+bbcode_enabled = true
+text = "PRESS ANYTHING TO START"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+
+[node name="Camera3D" type="Camera3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, -2)
+mesh = SubResource("PlaneMesh_guuao")
+
+[node name="sword2" parent="." instance=ExtResource("1_guuao")]
+transform = Transform3D(-3.090862e-08, 0.7071068, 0.7071067, 3.090862e-08, 0.7071067, -0.7071068, -1, 0, -4.371139e-08, -0.0449996, 0.22518271, -1)
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.19730532, -0.97052646)
+double_sided = false
+alpha_antialiasing_mode = 1
+text = "ONE STRIKE
+SWORD DUEL"
+font_size = 48
+outline_size = 0

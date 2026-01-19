@@ -2,9 +2,11 @@ extends Node3D
 
 var _game_scene : PackedScene = preload("res://src/game.tscn")
 var _upgrade_store_scene : PackedScene = preload("res://src/GUI/upgrade_store.tscn")
+var _main_menu_scene : PackedScene = preload("res://src/main_menu.tscn")
 
 var _game : Game = null
 var _upgrade_store : UpgradeStore = null
+var _main_menu : MainMenu = null
 
 var _player_stats : DuelStats
 var _player_gold : int = 10000
@@ -48,7 +50,9 @@ func _input(_event: InputEvent) -> void:
 
 func _ready() -> void:
     _player_stats = DuelStats.new()
-    go_to_shop(_player_stats, _player_gold)
+    _main_menu = _main_menu_scene.instantiate()
+    _main_menu.advance.connect(_on_menu_advance)
+    add_child(_main_menu)
 
 func get_upgrade_cost(type: UpgradeItem.Type) -> int:
     return ceili(10 + (_upgrade_levels[type] - 1.0) * _upgrade_costs[type])
@@ -156,3 +160,7 @@ func _on_return_to_shop(stats: DuelStats, gold: int, round_result: RoundEndScree
     elif round_result == RoundEndScreen.RoundResult.DRAW:
         _draws += 1
     go_to_shop(stats, gold)
+
+func _on_menu_advance() -> void:
+    remove_child(_main_menu)
+    go_to_shop(_player_stats, _player_gold)
