@@ -2,7 +2,7 @@ extends Node3D
 
 class_name Game
 
-signal returnToShop(stats: DuelStats, gold: int)
+signal returnToShop(stats: DuelStats, gold: int, round_result: RoundEndScreen.RoundResult)
 
 var _wave_factory : WaveFactory = null
 
@@ -51,8 +51,8 @@ func scale_difficulty(player_level: float) -> void:
     _wave_factory.base_parry_chance = parry_base + parry_max * diff_scale
     _wave_factory.base_bounty = roundi(bounty_base + bounty_max * diff_scale)
 
-func _on_duel_complete(_round_result: RoundEndScreen.RoundResult, gold_won: int) -> void:
+func _on_duel_complete(round_result: RoundEndScreen.RoundResult, gold_won: int) -> void:
     var gold : int = get_player_gold()
     gold += gold_won
     set_player_gold(max(gold, 0))
-    returnToShop.emit($Player.get_stats(), get_player_gold())
+    returnToShop.emit($Player.get_stats(), get_player_gold(), round_result)

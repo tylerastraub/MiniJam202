@@ -9,6 +9,10 @@ var _upgrade_store : UpgradeStore = null
 var _player_stats : DuelStats
 var _player_gold : int = 10000
 
+var _wins : int = 0
+var _losses : int = 0
+var _draws : int = 0
+
 var _upgrade_costs : Dictionary = {
     UpgradeItem.Type.DRAW_SPEED : 99,
     UpgradeItem.Type.CRITICAL_CHANCE : 99,
@@ -60,6 +64,7 @@ func go_to_shop(stats: DuelStats, gold: int) -> void:
     _player_stats = stats
     _player_gold = gold
     _upgrade_store = _upgrade_store_scene.instantiate()
+    _upgrade_store.set_duel_record(_wins, _losses, _draws)
     _upgrade_store.update_upgrade_item(
         UpgradeItem.Type.DRAW_SPEED,
         _player_stats.draw_time,
@@ -134,7 +139,7 @@ func _on_next_duel() -> void:
     _player_stats.bounty = ceili(10 + level_sum * 4.0 + randi_range(-4, 4))
     _game.set_player_stats(_player_stats)
     _game.set_player_gold(_player_gold)
-    _game.returnToShop.connect(go_to_shop)
+    _game.returnToShop.connect(_on_return_to_shop)
     add_child(_game)
 
     if _upgrade_store != null:
@@ -143,4 +148,11 @@ func _on_next_duel() -> void:
 
     _game.start_round(level_sum)
     
-    
+func _on_return_to_shop(stats: DuelStats, gold: int, round_result: RoundEndScreen.RoundResult) -> void:
+    if round_result == RoundEndScreen.RoundResult.WON:
+        _wins += 1
+    elif round_result == RoundEndScreen.RoundResult.LOST:
+        _losses += 1
+    elif round_result == RoundEndScreen.RoundResult.DRAW:
+        _draws += 1
+    go_to_shop(stats, gold)

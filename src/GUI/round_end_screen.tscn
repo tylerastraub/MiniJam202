@@ -99,3 +99,6 @@ offset_right = 576.0
 offset_bottom = 203.0
 texture = ExtResource("5_656bn")
 expand_mode = 1
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+volume_db = -12.0

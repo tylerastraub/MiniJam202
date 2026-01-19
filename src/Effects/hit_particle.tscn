@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://18an5vbn0g63"]
+
+[ext_resource type="Script" uid="uid://camduxbew1bjy" path="res://src/Effects/hit_particle.gd" id="1_xidl2"]
+[ext_resource type="Texture2D" uid="uid://dt7hmn3fg3iw7" path="res://res/sprites/hit_effect.jpg" id="2_t2i74"]
+
+[node name="HitParticle" type="Node3D"]
+script = ExtResource("1_xidl2")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+billboard = 1
+double_sided = false
+alpha_cut = 3
+texture_filter = 0
+texture = ExtResource("2_t2i74")

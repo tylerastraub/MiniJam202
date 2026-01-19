@@ -36,6 +36,9 @@ func update_upgrade_item(type: UpgradeItem.Type, from: float, to: float, cost: i
     _gold = gold_available
     $CanvasLayer/MarginContainer/StorePanel/GoldLabel.text = str(_gold)
 
+func set_duel_record(wins: int, losses: int, draws: int) -> void:
+    $CanvasLayer/DuelRecord.text = "Record: " + str(wins) + "-" + str(losses) + "-" + str(draws)
+
 func _on_upgrade_bought(upgrade_item: UpgradeItem) -> void:
     _gold -= upgrade_item._cost
     for ui in _upgrade_items:

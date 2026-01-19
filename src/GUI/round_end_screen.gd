@@ -11,6 +11,10 @@ enum RoundResult {
 
 signal continuePressed
 
+var _win_stream : AudioStream = preload("res://res/audio/win.wav")
+var _loss_stream : AudioStream = preload("res://res/audio/loss.wav")
+var _draw_stream : AudioStream = preload("res://res/audio/draw.wav")
+
 var _display : bool = false
 var _display_timer : float = 0.0
 var _display_delay : float = 1.0
@@ -21,7 +25,7 @@ var _gold_count : int = 0
 func _ready() -> void:
     $Button.pressed.connect(_on_continue_pressed)
     for child in get_children():
-        child.visible = false
+        if child is not AudioStreamPlayer: child.visible = false
 
 func _physics_process(delta: float) -> void:
     if _display: update_display()
@@ -39,6 +43,14 @@ func display(round_result: RoundResult, gold: int = 0) -> void:
     _gold_won = gold
     _gold_count = 0
     update_display()
+    
+    if round_result == RoundResult.WON:
+        $AudioStreamPlayer.stream = _win_stream
+    elif round_result == RoundResult.LOST:
+        $AudioStreamPlayer.stream = _loss_stream
+    if round_result == RoundResult.DRAW:
+        $AudioStreamPlayer.stream = _draw_stream
+    $AudioStreamPlayer.play()
 
 func update_display() -> void:
     if _round_result == RoundResult.WON:

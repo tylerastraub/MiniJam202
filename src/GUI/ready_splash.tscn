@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://b3y3rf3e2dyt4"]
+[gd_scene load_steps=5 format=3 uid="uid://b3y3rf3e2dyt4"]
 
 [ext_resource type="Script" uid="uid://blos8e0uuxvlj" path="res://src/GUI/ready_splash.gd" id="1_g37op"]
 [ext_resource type="Texture2D" uid="uid://deent048t5wau" path="res://res/sprites/ready.png" id="2_oqcvl"]
 [ext_resource type="Texture2D" uid="uid://d235es3e48ih3" path="res://res/sprites/ready_loadbar.png" id="3_w7458"]
+[ext_resource type="AudioStream" uid="uid://ddvy0qom2cdla" path="res://res/audio/ready.wav" id="4_oqcvl"]
 
 [node name="ReadySplash" type="Control"]
 layout_mode = 3
@@ -45,3 +46,6 @@ mouse_filter = 2
 texture = ExtResource("3_w7458")
 expand_mode = 1
 stretch_mode = 1
+
+[node name="ReadyAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_oqcvl")

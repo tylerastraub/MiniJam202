@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://cppt812y26w4h"]
+[gd_scene load_steps=13 format=3 uid="uid://cppt812y26w4h"]
 
 [ext_resource type="Script" uid="uid://b04ms00mqxrfl" path="res://src/game.gd" id="1_cdx1q"]
 [ext_resource type="PackedScene" uid="uid://bjte3uss16tqe" path="res://src/Duel/player.tscn" id="1_wqvko"]
@@ -6,7 +6,9 @@
 [ext_resource type="Script" uid="uid://q6gs7ulvu8gr" path="res://src/Duel/director.gd" id="2_cdx1q"]
 [ext_resource type="Script" uid="uid://cqu6rpwkgcv8h" path="res://src/Effects/camera_pivot.gd" id="3_4bcji"]
 [ext_resource type="PackedScene" uid="uid://b3y3rf3e2dyt4" path="res://src/GUI/ready_splash.tscn" id="6_wqvko"]
+[ext_resource type="AudioStream" uid="uid://g2gex5547ccv" path="res://res/audio/sword_hit.wav" id="8_4bcji"]
 [ext_resource type="PackedScene" uid="uid://cvkil57cca0bs" path="res://src/GUI/round_end_screen.tscn" id="9_4bcji"]
+[ext_resource type="AudioStream" uid="uid://blrdq7fi6hadt" path="res://res/audio/sword_swing.wav" id="9_uktfx"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_g3j30"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -45,6 +47,12 @@ _camera_pivot = NodePath("../CameraPivot")
 _player = NodePath("../Player")
 _ready_splash = NodePath("../CanvasLayer/ReadySplash")
 _round_end_screen = NodePath("../CanvasLayer/RoundEndScreen")
+
+[node name="SwordHitAudio" type="AudioStreamPlayer" parent="Director"]
+stream = ExtResource("8_4bcji")
+
+[node name="SwordSwingAudio" type="AudioStreamPlayer" parent="Director"]
+stream = ExtResource("9_uktfx")
 
 [node name="CameraPivot" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45822525, 0)

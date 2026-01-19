@@ -76,13 +76,16 @@ func duel(delta: float) -> void:
             _multi_attacking = true
             _multi_attack_timer = 0.0
         else:
+            $SwordSwingAudio.play()
             if _p_attack.criticals[0]:
                 _enemy_list[0].strike(true)
+                $SwordHitAudio.play()
             elif _enemy_list[0].defend() == true:
                 print("enemy defended!")
                 create_parry_shield(_enemy_list[0])
             else:
                 _enemy_list[0].strike(false)
+                $SwordHitAudio.play()
             
     if _multi_attacking:
         for i in range(_p_attack.num_of_hits):
@@ -94,14 +97,17 @@ func duel(delta: float) -> void:
                 break
             elif multi_attack_index != i or _enemy_attacked[i] == true:
                 continue
+            $SwordSwingAudio.play()
             _enemy_attacked[i] = true
             if _p_attack.criticals[i]:
                 _enemy_list[i].strike(true)
+                $SwordHitAudio.play()
             elif _enemy_list[i].defend() == true:
                 print("enemy defended!")
                 create_parry_shield(_enemy_list[i])
             else:
                 _enemy_list[i].strike(false)
+                $SwordHitAudio.play()
 
     var enemies_alive : bool = false
     for i in range(_enemy_list.size()):
@@ -114,15 +120,18 @@ func duel(delta: float) -> void:
             continue
         enemies_alive = true
         if enemy.action(_duel_timer):
+            $SwordSwingAudio.play()
             _enemies_who_attacked[i] = true
             var e_attack : Attack = enemy.attack()
             if e_attack.criticals[0]:
                 _player.strike(true)
+                $SwordHitAudio.play()
             elif _player.defend() == true:
                 print("player defended!")
                 create_parry_shield(_player)
             else:
                 _player.strike(false)
+                $SwordHitAudio.play()
 
     if enemies_alive == false:
         print("round won")
