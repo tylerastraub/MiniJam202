@@ -9,7 +9,7 @@ var _upgrade_store : UpgradeStore = null
 var _main_menu : MainMenu = null
 
 var _player_stats : DuelStats
-var _player_gold : int = 10000
+var _player_gold : int = 25
 
 var _wins : int = 0
 var _losses : int = 0
@@ -35,18 +35,6 @@ var _upgrade_maxes : Dictionary = {
     UpgradeItem.Type.MULTI_HIT_CHANCE : 1.0,
     UpgradeItem.Type.PARRY_CHANCE : 0.99,
 }
-
-func _input(_event: InputEvent) -> void:
-    if Input.is_action_just_released("pause"):
-        get_tree().quit()
-    if Input.is_action_just_released("reload_duel"):
-        if _game != null:
-            remove_child(_game)
-            _game = null
-        if _upgrade_store != null:
-            remove_child(_upgrade_store)
-            _upgrade_store = null
-        _on_next_duel()
 
 func _ready() -> void:
     _player_stats = DuelStats.new()
@@ -140,7 +128,7 @@ func _on_next_duel() -> void:
     var level_sum : float = 0.0
     for key in _upgrade_levels:
         level_sum += (_upgrade_levels[key] - 1) * 10
-    _player_stats.bounty = ceili(10 + level_sum * 4.0 + randi_range(-4, 4))
+    _player_stats.bounty = ceili(10 + level_sum * 3.0 + randi_range(-4, 4))
     _game.set_player_stats(_player_stats)
     _game.set_player_gold(_player_gold)
     _game.returnToShop.connect(_on_return_to_shop)
