@@ -23,7 +23,7 @@ func generate_wave() -> Array[DuelStats]:
 
     var num_of_enemies : int = base_num_of_enemies
     @warning_ignore("integer_division")
-    var num_of_enemies_range : int = num_of_enemies / 2
+    var num_of_enemies_range : int = 0 if num_of_enemies == 1 else num_of_enemies / 2 + 1
     if num_of_enemies_range != 0:    
         num_of_enemies -= randi() % num_of_enemies_range # can never go above base_num_of_enemies
     for i in range(num_of_enemies):

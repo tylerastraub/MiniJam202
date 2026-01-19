@@ -128,7 +128,7 @@ func _on_next_duel() -> void:
     var level_sum : float = 0.0
     for key in _upgrade_levels:
         level_sum += (_upgrade_levels[key] - 1) * 10
-    _player_stats.bounty = ceili(10 + level_sum * 3.0 + randi_range(-4, 4))
+    _player_stats.bounty = ceili(10 + level_sum * 0.7 + randi_range(-4, 4))
     _game.set_player_stats(_player_stats)
     _game.set_player_gold(_player_gold)
     _game.returnToShop.connect(_on_return_to_shop)
