@@ -39,8 +39,8 @@ func scale_difficulty(player_level: float) -> void:
     var parry_base : float = 0.1
     var parry_max : float = 0.4
 
-    var bounty_base : float = 10
-    var bounty_max : float = 10
+    var bounty_base : float = 15
+    var bounty_max : float = 15
 
     var max_level : float = 38.0
     var diff_scale : float = player_level / max_level

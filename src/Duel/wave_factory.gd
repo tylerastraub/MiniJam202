@@ -33,7 +33,7 @@ func generate_wave() -> Array[DuelStats]:
         stats.parry_chance = min(base_parry_chance + randf_range(parry_chance_range * -1.0, parry_chance_range), 0.99)
         stats.health = base_health + randi_range(0, health_range)
         @warning_ignore("integer_division")
-        stats.bounty = base_bounty + randi_range(base_bounty / -3, base_bounty / 3)
+        stats.bounty = base_bounty + randi_range(base_bounty / -4, base_bounty / 4)
         res.push_back(stats)
 
     return res
