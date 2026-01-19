@@ -19,6 +19,8 @@ signal duelComplete(round_result: RoundEndScreen.RoundResult, gold_won: int)
 @export var _ready_splash : ReadySplash = null
 @export var _round_end_screen : RoundEndScreen = null
 
+var _parry_shield_scene : PackedScene = preload("res://src/Effects/parry_shield.tscn")
+
 var _enemy_scene : PackedScene = preload("res://src/Duel/enemy.tscn")
 var _enemy_list : Array[Enemy] = []
 
@@ -35,8 +37,8 @@ var _draw_delay : float = 0.5
 
 var _round_state : RoundState = RoundState.NOVAL
 
-func start_round() -> void:
-    spawn_enemies()
+func start_round(enemy_stats: Array[DuelStats]) -> void:
+    spawn_enemies(enemy_stats)
     set_round_state(RoundState.CAMERA_SPAWN)
     _camera_pivot.spawn()
     _camera_pivot.cameraSpawned.connect(_on_camera_spawned)
@@ -62,6 +64,12 @@ func duel(delta: float) -> void:
                 enemy.set_state(DuelAI.State.SHEATH)
         return
     
+    var enemies_attacking = false
+    for e in _enemies_who_attacked:
+        if e == false:
+            enemies_attacking = true
+            break
+    
     if _player.action(_duel_timer):
         _p_attack = _player.attack()
         if _p_attack.num_of_hits > 1:
@@ -72,6 +80,7 @@ func duel(delta: float) -> void:
                 _enemy_list[0].strike(true)
             elif _enemy_list[0].defend() == true:
                 print("enemy defended!")
+                create_parry_shield(_enemy_list[0])
             else:
                 _enemy_list[0].strike(false)
             
@@ -90,6 +99,7 @@ func duel(delta: float) -> void:
                 _enemy_list[i].strike(true)
             elif _enemy_list[i].defend() == true:
                 print("enemy defended!")
+                create_parry_shield(_enemy_list[i])
             else:
                 _enemy_list[i].strike(false)
 
@@ -97,6 +107,7 @@ func duel(delta: float) -> void:
     for i in range(_enemy_list.size()):
         var enemy := _enemy_list[i]
         if enemy.get_stats().health < 1:
+            _enemies_who_attacked[i] = true
             if enemy.get_state() == DuelAI.State.HURT:
                 enemies_alive = true
             continue
@@ -108,6 +119,7 @@ func duel(delta: float) -> void:
                 _player.strike(true)
             elif _player.defend() == true:
                 print("player defended!")
+                create_parry_shield(_player)
             else:
                 _player.strike(false)
 
@@ -116,21 +128,15 @@ func duel(delta: float) -> void:
         set_round_state(RoundState.WON)
         _player.set_state(DuelAI.State.SHEATH)
     
-    var enemies_attacking = false
-    for e in _enemies_who_attacked:
-        if e == false:
-            enemies_attacking = true
-            break
     if enemies_attacking == false and _player.get_stats().health > 0 and enemies_alive:
         set_round_state(RoundState.DRAW)
-
+    
     _multi_attack_timer += delta
     if !_multi_attacking: _duel_timer += delta
 
-func spawn_enemies() -> void:
-    var stat_list : Array[DuelStats] = WaveFactory.generate_wave()
-    for i in range(stat_list.size()):
-        var stat : DuelStats = stat_list[i]
+func spawn_enemies(enemy_stats: Array[DuelStats]) -> void:
+    for i in range(enemy_stats.size()):
+        var stat : DuelStats = enemy_stats[i]
         var enemy : Enemy = _enemy_scene.instantiate()
         add_child(enemy)
         enemy.ai_init(stat)
@@ -152,6 +158,15 @@ func set_round_state(state: RoundState) -> void:
         _round_end_screen.display(RoundEndScreen.RoundResult.WON, gold_won)
     elif _round_state == RoundState.LOST:
         _round_end_screen.display(RoundEndScreen.RoundResult.LOST, _player.get_stats().bounty * -1)
+
+func create_parry_shield(user: Node3D) -> void:
+    var shield : ParryShield = _parry_shield_scene.instantiate()
+    add_child(shield)
+    shield.global_position = user.global_position
+    shield.lifetimeExpired.connect(_on_parry_shield_lifetime_expired)
+
+func _on_parry_shield_lifetime_expired(shield: ParryShield):
+    remove_child(shield)
 
 func _on_camera_spawned() -> void:
     if _round_state == RoundState.CAMERA_SPAWN:

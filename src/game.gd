@@ -4,12 +4,15 @@ class_name Game
 
 signal returnToShop(stats: DuelStats, gold: int)
 
+var _wave_factory : WaveFactory = null
+
 func _ready() -> void:
     $Director.duelComplete.connect(_on_duel_complete)
+    _wave_factory = WaveFactory.new()
 
 func start_round(player_level: float) -> void:
     scale_difficulty(player_level)
-    $Director.start_round()
+    $Director.start_round(_wave_factory.generate_wave())
 
 func set_player_stats(stats: DuelStats) -> void:
     $Player.ai_init(stats)
@@ -28,7 +31,7 @@ func scale_difficulty(player_level: float) -> void:
     var enemies_max : float = 5
 
     var draw_base : float = 2.0
-    var draw_max : float = 1.5
+    var draw_max : float = 1.9
     
     var critical_base : float = 0.05
     var critical_max : float = 0.25
@@ -42,11 +45,11 @@ func scale_difficulty(player_level: float) -> void:
     var max_level : float = 38.0
     var diff_scale : float = player_level / max_level
 
-    WaveFactory.base_num_of_enemies = roundi(enemies_base + enemies_max * diff_scale)
-    WaveFactory.base_draw_time = roundi(draw_base - draw_max * diff_scale)
-    WaveFactory.base_critical_chance = roundi(critical_base + critical_max * diff_scale)
-    WaveFactory.base_parry_chance = roundi(parry_base + parry_max * diff_scale)
-    WaveFactory.base_bounty = roundi(bounty_base + bounty_max * diff_scale)
+    _wave_factory.base_num_of_enemies = roundi(enemies_base + enemies_max * diff_scale)
+    _wave_factory.base_draw_time = draw_base - draw_max * diff_scale
+    _wave_factory.base_critical_chance = critical_base + critical_max * diff_scale
+    _wave_factory.base_parry_chance = parry_base + parry_max * diff_scale
+    _wave_factory.base_bounty = roundi(bounty_base + bounty_max * diff_scale)
 
 func _on_duel_complete(_round_result: RoundEndScreen.RoundResult, gold_won: int) -> void:
     var gold : int = get_player_gold()
