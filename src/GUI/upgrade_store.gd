@@ -13,6 +13,7 @@ var _gold : int = 0
 
 func _ready() -> void:
     $CanvasLayer/MarginContainer/StorePanel/NextDuelButton.pressed.connect(_on_next_duel_pressed)
+    $samurai2/AnimationPlayer.play("Chillin")
 
 func update_upgrade_item(type: UpgradeItem.Type, from: float, to: float, cost: int, gold_available: int, max_upgrade: float) -> void:
     var upgrade_item : UpgradeItem = null

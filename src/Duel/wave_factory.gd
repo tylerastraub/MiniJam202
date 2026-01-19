@@ -28,7 +28,7 @@ func generate_wave() -> Array[DuelStats]:
         num_of_enemies -= randi() % num_of_enemies_range # can never go above base_num_of_enemies
     for i in range(num_of_enemies):
         var stats : DuelStats = DuelStats.new()
-        stats.draw_time = max(base_draw_time + randf_range(draw_time_range * -1.0, draw_time_range), 0.01)
+        stats.draw_time = max(base_draw_time + randf_range(draw_time_range * -1.0, draw_time_range), 0.02)
         stats.critical_chance = min(base_critical_chance + randf_range(critical_chance_range * -1.0, critical_chance_range), 0.99)
         stats.parry_chance = min(base_parry_chance + randf_range(parry_chance_range * -1.0, parry_chance_range), 0.99)
         stats.health = base_health + randi_range(0, health_range)

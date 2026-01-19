@@ -70,7 +70,7 @@ func duel(delta: float) -> void:
             enemies_attacking = true
             break
     
-    if _player.action(_duel_timer):
+    if _player.action(_duel_timer) and _player.get_state() != DuelAI.State.HURT:
         _p_attack = _player.attack()
         if _p_attack.num_of_hits > 1:
             _multi_attacking = true
@@ -107,9 +107,10 @@ func duel(delta: float) -> void:
     for i in range(_enemy_list.size()):
         var enemy := _enemy_list[i]
         if enemy.get_stats().health < 1:
-            _enemies_who_attacked[i] = true
             if enemy.get_state() == DuelAI.State.HURT:
                 enemies_alive = true
+            else:
+                _enemies_who_attacked[i] = true
             continue
         enemies_alive = true
         if enemy.action(_duel_timer):
