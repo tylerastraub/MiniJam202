@@ -63,7 +63,7 @@ func set_max_upgrade(max_upgrade: float) -> void:
     check_if_maxed()
 
 func check_if_maxed() -> void:
-    if (_upgrade_from <= _max_upgrade and _type == Type.DRAW_SPEED) or (_upgrade_from >= _max_upgrade and _type != Type.DRAW_SPEED):
+    if (_upgrade_from <= _max_upgrade and _type == Type.DRAW_SPEED) or ((_upgrade_from > _max_upgrade or is_equal_approx(_upgrade_from, _max_upgrade)) and _type != Type.DRAW_SPEED):
         $BuyButton.disabled = true
         $BuyButton.text = "MAX"
         $CostLabel.visible = false
